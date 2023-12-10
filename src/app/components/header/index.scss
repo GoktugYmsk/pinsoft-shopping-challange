@@ -1,0 +1,28 @@
+.container-header__navbar {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 40px;
+    background: rgb(14, 90, 171);
+    height: 60px;
+
+
+    .container-header__navbar__icons {
+        display: flex;
+        font-size: 30px;
+        gap: 30px;
+        color: white;
+
+        .container-header__navbar__icons__left {
+            cursor: pointer;
+        }
+
+        .container-header__navbar__icons__rigth {
+            cursor: pointer;
+        }
+    }
+}
+
+.opacityActive {
+    opacity: 0.2;
+    transition: opacity 1s ease;
+}

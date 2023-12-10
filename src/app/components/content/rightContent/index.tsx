@@ -1,0 +1,102 @@
+import React, { useEffect, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import ProductPopup from './productPopup';
+
+import { setBasketProducts } from '../../configure';
+import { useDispatch, useSelector } from 'react-redux';
+
+interface Product {
+    id: number;
+    name: string;
+    fiyat: number;
+}
+
+interface RootState {
+    allBasket: {
+        basketProducts: Product[];
+    };
+}
+
+interface RightContentProps {
+    products: Product[];
+    urunleriFiltrele: (product: Product) => boolean;
+}
+
+function RightContent({ products, urunleriFiltrele }: RightContentProps) {
+    const [loading, setLoading] = useState<boolean>(true);
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+    const [productInBasket, setProductInBasket] = useState<{ [key: number]: boolean }>({});
+
+    const dispatch = useDispatch();
+
+    const basketProducts = useSelector((state: RootState) => state.allBasket.basketProducts);
+
+    const handleProductClick = (product: Product) => {
+        setSelectedProduct(product);
+    };
+
+    const simulateLoading = (value: boolean) => {
+        setLoading(value);
+    };
+
+
+    useEffect(() => {
+        setTimeout(() => {
+            simulateLoading(true);
+        }, 5000);
+    }, []);
+
+    useEffect(() => {
+        const newProductInBasket: { [key: number]: boolean } = {};
+        basketProducts.forEach((product) => {
+            newProductInBasket[product.id] = true;
+        });
+        setProductInBasket(newProductInBasket);
+    }, [basketProducts]);
+
+    const handleSepeteEkle = (product: Product) => {
+        console.log(`Ürün sepete eklendi: ${product.name}`);
+        dispatch(setBasketProducts([...basketProducts, product]));
+        setProductInBasket((prev) => ({ ...prev, [product.id]: true }));
+    };
+
+    const handleRemoveFromCart = (productId: number) => {
+        console.log(`Ürün sepetten çıkarıldı: ${productId}`);
+        const updatedBasket = basketProducts.filter((product) => product.id !== productId);
+        dispatch(setBasketProducts(updatedBasket));
+        setProductInBasket((prev) => ({ ...prev, [productId]: false }));
+    };
+
+    return (
+        <div className='container-content__box-right'>
+            <div className='container-content__box-right__products'>
+                {products.filter(urunleriFiltrele).map((product, index) => (
+                    <div className='container-content__box-right__products__top' key={index}>
+                        <p onClick={() => handleProductClick(product)}>{product.name}</p>
+                        <p>{product.fiyat} TL</p>
+                        <Button
+                            variant='info'
+                            onClick={() => {
+                                const isProductInBasket = basketProducts.some((basketProduct) => basketProduct.id === product.id);
+
+                                if (isProductInBasket) {
+                                    handleRemoveFromCart(product.id);
+                                } else {
+                                    handleSepeteEkle(product);
+                                }
+                            }}
+                        >
+                            {productInBasket[product.id] ? 'Sepetten Çıkar' : 'Sepete Ekle'}
+                        </Button>
+                    </div>
+                ))}
+
+            </div>
+            {selectedProduct && (
+                <ProductPopup product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+            )}
+        </div>
+    );
+}
+
+export default RightContent;
