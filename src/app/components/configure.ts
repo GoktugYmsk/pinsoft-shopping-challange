@@ -4,7 +4,9 @@ interface Product {
     id: number;
     name: string;
     fiyat: number;
+    image?: string;
 }
+
 
 interface ConfigureState {
     basket: boolean;

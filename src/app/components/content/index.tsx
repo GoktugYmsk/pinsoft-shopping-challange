@@ -9,7 +9,9 @@ interface Product {
     id: number;
     name: string;
     fiyat: number;
+    image?: string;
 }
+
 
 interface RootState {
     isBasketActive: {
@@ -34,7 +36,7 @@ function Content() {
     };
 
     const products: Product[] = [
-        { name: 'Ürün 1', fiyat: 50, id: 1 },
+        { name: 'Ürün 1', fiyat: 50, id: 1, image: 'https://picsum.photos/id/237/200/300' },
         { name: 'Ürün 2', fiyat: 75, id: 2 },
         { name: 'Ürün 3', fiyat: 750, id: 3 },
         { name: 'Ürün 4', fiyat: 800, id: 4 },

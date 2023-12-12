@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import Head from 'next/head';
 
 import { store } from './store/store';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Home() {
   return (
