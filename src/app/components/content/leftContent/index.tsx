@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import axios from 'axios';
 
 interface LeftContentProps {
     setFiltre: React.Dispatch<React.SetStateAction<string>>;
@@ -16,6 +15,7 @@ interface Category {
 
 const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setFiyatAraligi }) => {
     const [categories, setCategories] = useState<Category[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,7 +35,19 @@ const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setF
         fetchData();
     }, []);
 
-    console.log('categories', categories)
+    const handleCheckboxChange = (categoryId: number) => {
+        setSelectedCategories(prevSelectedCategories => {
+            if (prevSelectedCategories.includes(categoryId)) {
+                return prevSelectedCategories.filter(id => id !== categoryId);
+            } else {
+                return [...prevSelectedCategories, categoryId];
+            }
+        });
+    };
+
+    useEffect(() => {
+        console.log('Seçilen Kategoriler:', categories.filter(category => selectedCategories.includes(category.id)).map(category => category.name));
+    }, [selectedCategories, categories]);
 
     return (
         <div className='container-content__box-left'>
@@ -53,7 +65,11 @@ const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setF
             <div className='container-content__box-left__top'>
                 {categories.map((category) => (
                     <label key={category.id}>
-                        <input type='checkbox' defaultChecked={false} />
+                        <input
+                            type='checkbox'
+                            checked={selectedCategories.includes(category.id)}
+                            onChange={() => handleCheckboxChange(category.id)}
+                        />
                         <p>{category.name}</p>
                     </label>
                 ))}
