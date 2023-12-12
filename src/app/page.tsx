@@ -7,6 +7,7 @@ import Head from 'next/head';
 
 import { store } from './store/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Login from './components/login';
 
 export default function Home() {
   return (
@@ -17,7 +18,7 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <Provider store={store}>
-          <CustomComponent />
+          <Login />
         </Provider>
       </div>
     </main>
