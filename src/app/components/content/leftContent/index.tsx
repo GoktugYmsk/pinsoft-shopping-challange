@@ -6,16 +6,20 @@ interface LeftContentProps {
     setFiltre: React.Dispatch<React.SetStateAction<string>>;
     fiyatAraligi: [number, number];
     setFiyatAraligi: React.Dispatch<React.SetStateAction<[number, number]>>;
+    selectedCategories: number[];
+    setSelectedCategories: React.Dispatch<React.SetStateAction<number[]>>;
+    categories: Category[];
 }
+
+
 
 interface Category {
     id: number;
     name: string;
 }
 
-const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setFiyatAraligi }) => {
+const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setFiyatAraligi, setSelectedCategories, selectedCategories }) => {
     const [categories, setCategories] = useState<Category[]>([]);
-    const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,18 +40,15 @@ const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setF
     }, []);
 
     const handleCheckboxChange = (categoryId: number) => {
-        setSelectedCategories(prevSelectedCategories => {
+        setSelectedCategories((prevSelectedCategories) => {
             if (prevSelectedCategories.includes(categoryId)) {
-                return prevSelectedCategories.filter(id => id !== categoryId);
+                return prevSelectedCategories.filter((id) => id !== categoryId);
             } else {
                 return [...prevSelectedCategories, categoryId];
             }
         });
     };
 
-    useEffect(() => {
-        console.log('Seçilen Kategoriler:', categories.filter(category => selectedCategories.includes(category.id)).map(category => category.name));
-    }, [selectedCategories, categories]);
 
     return (
         <div className='container-content__box-left'>

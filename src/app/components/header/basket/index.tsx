@@ -12,7 +12,6 @@ function Basket() {
 
     const basketProducts = useSelector((state: RootState) => state.allBasket.basketProducts);
 
-    console.log('allBasket', basketProducts);
 
     const handleCloseBasket = () => {
         dispatch(setBasket(false));

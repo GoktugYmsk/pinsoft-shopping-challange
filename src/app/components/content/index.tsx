@@ -13,35 +13,48 @@ interface RootState {
     };
 }
 
+export interface Category {
+    id: number;
+    name: string;
+}
 interface Product {
     id: number;
     name: string;
     price: number;
+    category: string;
 }
 
 function Content() {
     const [filtre, setFiltre] = useState<string>('');
-    const [fiyatAraligi, setFiyatAraligi] = useState<[number, number]>([0, 1000]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+    const [fiyatAraligi, setFiyatAraligi] = useState<[number, number]>([0, 1000]);
 
     const isBasketActive = useSelector((state: RootState) => state.isBasketActive.basket);
 
-    console.log('isBasketActive', isBasketActive);
+    console.log('selectedCategories', selectedCategories)
 
     const urunleriFiltrele = (urun: Product) => {
         return (
             urun.name.toLowerCase().includes(filtre.toLowerCase()) &&
             urun.price >= fiyatAraligi[0] &&
-            urun.price <= fiyatAraligi[1]
+            urun.price <= fiyatAraligi[1] &&
+            (selectedCategories.length === 0 || selectedCategories.includes(urun.id))
         );
     };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://pinsoft.onrender.com/products');
-                const data = response.data;
-                setAllProducts(data);
+                const productsResponse = await axios.get('https://pinsoft.onrender.com/products');
+                const categoriesResponse = await axios.get('https://pinsoft.onrender.com/category');
+
+                const productsData = productsResponse.data;
+                const categoriesData = categoriesResponse.data;
+
+                setAllProducts(productsData);
+                setCategories(categoriesData);
             } catch (error) {
                 console.error('Veri alınamadı:', error);
             }
@@ -49,13 +62,21 @@ function Content() {
 
         fetchData();
     }, []);
+
     console.log('allProducts', allProducts)
 
     return (
         <>
             <div className={`container-content ${isBasketActive ? 'opacityActive' : ''}`}>
                 <div className='container-content__box'>
-                    <LeftContent setFiltre={setFiltre} fiyatAraligi={fiyatAraligi} setFiyatAraligi={setFiyatAraligi} />
+                    <LeftContent
+                        setFiltre={setFiltre}
+                        fiyatAraligi={fiyatAraligi}
+                        setFiyatAraligi={setFiyatAraligi}
+                        categories={categories}
+                        selectedCategories={selectedCategories}
+                        setSelectedCategories={setSelectedCategories}
+                    />
                     <RightContent products={allProducts} urunleriFiltrele={urunleriFiltrele} />
                 </div>
             </div>

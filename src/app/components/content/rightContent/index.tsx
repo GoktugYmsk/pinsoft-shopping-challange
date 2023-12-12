@@ -10,6 +10,7 @@ interface Product {
     id: number;
     name: string;
     price: number;
+    category: string;
 }
 
 interface RootState {
@@ -20,7 +21,7 @@ interface RootState {
 
 interface RightContentProps {
     products: Product[];
-    urunleriFiltrele: (product: Product) => boolean;
+    urunleriFiltrele: (urun: Product) => boolean;
 }
 
 function RightContent({ products, urunleriFiltrele }: RightContentProps) {
@@ -45,7 +46,6 @@ function RightContent({ products, urunleriFiltrele }: RightContentProps) {
     };
 
     const handleRemoveFromCart = (productId: number) => {
-        console.log(`Ürün sepetten çıkarıldı: ${productId}`);
         const updatedBasket = basketProducts.filter((product) => product.id !== productId);
         dispatch(setBasketProducts(updatedBasket));
         setProductInBasket((prev) => ({ ...prev, [productId]: false }));
