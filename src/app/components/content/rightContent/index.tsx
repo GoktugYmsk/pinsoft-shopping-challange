@@ -55,7 +55,6 @@ function RightContent({ products, urunleriFiltrele }: RightContentProps) {
     }, [basketProducts]);
 
     const handleSepeteEkle = (product: Product) => {
-        console.log(`Ürün sepete eklendi: ${product.name}`);
         dispatch(setBasketProducts([...basketProducts, product]));
         setProductInBasket((prev) => ({ ...prev, [product.id]: true }));
     };
