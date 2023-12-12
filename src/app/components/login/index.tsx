@@ -1,17 +1,19 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
 
-const Login: React.FC = () => {
-    const router = useRouter();
+
+import { useState } from 'react';
+
+interface LoginProps {
+    onLoginSuccess: () => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
     const handleLogin = () => {
-
         if (username === 'user' && password === 'password') {
-
-            router.push('/');
+            onLoginSuccess();
         } else {
             setError('Kullanıcı adı veya şifre hatalı');
         }

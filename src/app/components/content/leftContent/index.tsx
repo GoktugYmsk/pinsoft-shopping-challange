@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import axios from 'axios';
 
 interface LeftContentProps {
     setFiltre: React.Dispatch<React.SetStateAction<string>>;
@@ -8,7 +9,34 @@ interface LeftContentProps {
     setFiyatAraligi: React.Dispatch<React.SetStateAction<[number, number]>>;
 }
 
+interface Category {
+    id: number;
+    name: string;
+}
+
 const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setFiyatAraligi }) => {
+    const [categories, setCategories] = useState<Category[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://pinsoft.onrender.com/category');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                setCategories(data);
+            } catch (error) {
+                console.error('Veri alınamadı:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    console.log('categories', categories)
+
     return (
         <div className='container-content__box-left'>
             <div className='container-content__box-left__filter'>
@@ -23,20 +51,12 @@ const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setF
                 </InputGroup>
             </div>
             <div className='container-content__box-left__top'>
-                <label>
-                    <input type='checkbox' defaultChecked={false} />
-                    <p>Kitap</p>
-                </label>
-
-                <label>
-                    <input type='checkbox' defaultChecked={false} />
-                    <p>Elektronik</p>
-                </label>
-
-                <label>
-                    <input type='checkbox' defaultChecked={false} />
-                    <p>Giyim</p>
-                </label>
+                {categories.map((category) => (
+                    <label key={category.id}>
+                        <input type='checkbox' defaultChecked={false} />
+                        <p>{category.name}</p>
+                    </label>
+                ))}
             </div>
             <div className="container-content__box-left__down__filter">
                 <label>Fiyat Aralığı:</label>

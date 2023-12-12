@@ -56,7 +56,7 @@ function Basket() {
                     {basketProducts.map((product, index) => (
                         <div className='container-basket__products__box__alt' key={index}>
                             <p>{product.name}</p>
-                            <p>{product.fiyat}</p>
+                            <p>{product.price}</p>
                         </div>
                     ))}
                 </div>

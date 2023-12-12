@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ProductPopup from './productPopup';
 
+
 import { setBasketProducts } from '../../configure';
 import { useDispatch, useSelector } from 'react-redux';
 
 interface Product {
     id: number;
     name: string;
-    fiyat: number;
+    price: number;
 }
 
 interface RootState {
@@ -23,28 +24,12 @@ interface RightContentProps {
 }
 
 function RightContent({ products, urunleriFiltrele }: RightContentProps) {
-    const [loading, setLoading] = useState<boolean>(true);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [productInBasket, setProductInBasket] = useState<{ [key: number]: boolean }>({});
 
     const dispatch = useDispatch();
 
     const basketProducts = useSelector((state: RootState) => state.allBasket.basketProducts);
-
-    const handleProductClick = (product: Product) => {
-        setSelectedProduct(product);
-    };
-
-    const simulateLoading = (value: boolean) => {
-        setLoading(value);
-    };
-
-
-    useEffect(() => {
-        setTimeout(() => {
-            simulateLoading(true);
-        }, 5000);
-    }, []);
 
     useEffect(() => {
         const newProductInBasket: { [key: number]: boolean } = {};
@@ -66,13 +51,17 @@ function RightContent({ products, urunleriFiltrele }: RightContentProps) {
         setProductInBasket((prev) => ({ ...prev, [productId]: false }));
     };
 
+    const handleProductClick = (product: Product) => {
+        setSelectedProduct(product);
+    };
+
     return (
         <div className='container-content__box-right'>
             <div className='container-content__box-right__products'>
                 {products.filter(urunleriFiltrele).map((product, index) => (
                     <div className='container-content__box-right__products__top' key={index}>
                         <p onClick={() => handleProductClick(product)}>{product.name}</p>
-                        <p>{product.fiyat} TL</p>
+                        <p>{product.price} TL</p>
                         <Button
                             variant='info'
                             onClick={() => {
@@ -89,7 +78,6 @@ function RightContent({ products, urunleriFiltrele }: RightContentProps) {
                         </Button>
                     </div>
                 ))}
-
             </div>
             {selectedProduct && (
                 <ProductPopup product={selectedProduct} onClose={() => setSelectedProduct(null)} />

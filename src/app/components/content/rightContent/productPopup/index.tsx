@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 interface Product {
     id: number;
     name: string;
-    fiyat: number;
+    price: number;
     image?: string;
 }
 
@@ -22,7 +22,7 @@ const ProductPopup: React.FC<ProductPopupProps> = ({ product, onClose }) => {
             </Modal.Header>
             <Modal.Body>
                 {product.image && <img src={product.image} alt={product.name} />}
-                <p>Fiyat: {product.fiyat} TL</p>
+                <p>Fiyat: {product.price} TL</p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>

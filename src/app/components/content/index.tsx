@@ -1,17 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Basket from '../header/basket';
 import LeftContent from './leftContent';
 import RightContent from './rightContent';
+
+import axios from 'axios';
 import './index.scss';
-
-interface Product {
-    id: number;
-    name: string;
-    fiyat: number;
-    image?: string;
-}
-
 
 interface RootState {
     isBasketActive: {
@@ -19,9 +13,16 @@ interface RootState {
     };
 }
 
+interface Product {
+    id: number;
+    name: string;
+    price: number;
+}
+
 function Content() {
     const [filtre, setFiltre] = useState<string>('');
     const [fiyatAraligi, setFiyatAraligi] = useState<[number, number]>([0, 1000]);
+    const [allProducts, setAllProducts] = useState<Product[]>([]);
 
     const isBasketActive = useSelector((state: RootState) => state.isBasketActive.basket);
 
@@ -30,28 +31,32 @@ function Content() {
     const urunleriFiltrele = (urun: Product) => {
         return (
             urun.name.toLowerCase().includes(filtre.toLowerCase()) &&
-            urun.fiyat >= fiyatAraligi[0] &&
-            urun.fiyat <= fiyatAraligi[1]
+            urun.price >= fiyatAraligi[0] &&
+            urun.price <= fiyatAraligi[1]
         );
     };
 
-    const products: Product[] = [
-        { name: 'Ürün 1', fiyat: 50, id: 1, image: 'https://picsum.photos/id/237/200/300' },
-        { name: 'Ürün 2', fiyat: 75, id: 2 },
-        { name: 'Ürün 3', fiyat: 750, id: 3 },
-        { name: 'Ürün 4', fiyat: 800, id: 4 },
-        { name: 'Ürün 5', fiyat: 600, id: 5 },
-        { name: 'Ürün 6', fiyat: 502, id: 6 },
-        { name: 'Ürün 7', fiyat: 443, id: 7 },
-        { name: 'Ürün 8', fiyat: 600, id: 8 },
-    ];
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('https://pinsoft.onrender.com/products');
+                const data = response.data;
+                setAllProducts(data);
+            } catch (error) {
+                console.error('Veri alınamadı:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+    console.log('allProducts', allProducts)
 
     return (
         <>
             <div className={`container-content ${isBasketActive ? 'opacityActive' : ''}`}>
                 <div className='container-content__box'>
                     <LeftContent setFiltre={setFiltre} fiyatAraligi={fiyatAraligi} setFiyatAraligi={setFiyatAraligi} />
-                    <RightContent products={products} urunleriFiltrele={urunleriFiltrele} />
+                    <RightContent products={allProducts} urunleriFiltrele={urunleriFiltrele} />
                 </div>
             </div>
             {isBasketActive && <Basket />}
