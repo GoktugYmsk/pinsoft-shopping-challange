@@ -22,6 +22,7 @@ interface Product {
     name: string;
     price: number;
     category: string;
+    explanation: string;
 }
 
 function Content() {

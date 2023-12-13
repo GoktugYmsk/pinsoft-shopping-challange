@@ -6,7 +6,8 @@ interface Product {
     id: number;
     name: string;
     price: number;
-    image?: string;
+    category: string;
+    explanation: string;
 }
 
 interface ProductPopupProps {
@@ -21,8 +22,8 @@ const ProductPopup: React.FC<ProductPopupProps> = ({ product, onClose }) => {
                 <Modal.Title>{product.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {product.image && <img src={product.image} alt={product.name} />}
                 <p>Fiyat: {product.price} TL</p>
+                <p> {product.explanation} </p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>

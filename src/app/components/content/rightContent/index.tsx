@@ -11,6 +11,7 @@ interface Product {
     name: string;
     price: number;
     category: string;
+    explanation: string;
 }
 
 interface RootState {
@@ -62,6 +63,7 @@ function RightContent({ products, urunleriFiltrele }: RightContentProps) {
                     <div className='container-content__box-right__products__top' key={index}>
                         <p onClick={() => handleProductClick(product)}>{product.name}</p>
                         <p>{product.price} TL</p>
+                        <p>{product.explanation} TL</p>
                         <Button
                             variant='info'
                             onClick={() => {
