@@ -1,18 +1,17 @@
 'use client'
-
-import styles from './page.module.css'
-import CustomComponent from './components/customComponent';
+import styles from './page.module.css';
+import CustomComponent from '../pages/main';
 import { Provider } from 'react-redux';
 import Head from 'next/head';
-
+import Login from '@/pages/login';
 import { store } from './store/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Login from './components/login';
+import { useRouter } from 'next/router';
 
-import { useRouter } from 'next/navigation';
+import NextLink from 'next/link';
 
-export default function Home() {
 
+const Home: React.FC = () => {
   const router = useRouter();
 
   const handleLoginSuccess = () => {
@@ -23,12 +22,14 @@ export default function Home() {
     <main className={styles.main}>
       <div>
         <Head>
-          <title>Pisnoft Shopping</title>
+          <title>Pinsoft Alışveriş</title>
         </Head>
         <Provider store={store}>
-          <CustomComponent />
+          <Login onLoginSuccess={handleLoginSuccess} />
         </Provider>
       </div>
     </main>
-  )
+  );
 }
+
+export default Home;

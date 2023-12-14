@@ -1,6 +1,7 @@
-
-
+'use client'
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { NextRouter } from 'next/router';
 
 interface LoginProps {
     onLoginSuccess: () => void;
@@ -10,13 +11,21 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const router = useRouter();
 
     const handleLogin = () => {
         if (username === 'user' && password === 'password') {
             onLoginSuccess();
+
+            router.push('/main');
         } else {
             setError('Kullanıcı adı veya şifre hatalı');
         }
+    };
+
+    const redirectToMain = () => {
+
+        router.push('/main');
     };
 
     return (
@@ -36,6 +45,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             </div>
             <button onClick={handleLogin}>Giriş Yap</button>
             {error && <p style={{ color: 'red' }}>{error}</p>}
+            <button onClick={redirectToMain}>Ana Sayfaya Git</button>
         </div>
     );
 };

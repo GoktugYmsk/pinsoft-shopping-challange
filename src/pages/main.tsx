@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Header from '../header';
-import Content from '../content';
+import Header from '../app/components/header';
+import Content from '../app/components/content';
 
 function CustomComponent(): JSX.Element {
     return (
