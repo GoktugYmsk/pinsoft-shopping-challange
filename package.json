@@ -19,6 +19,7 @@
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "next": "^14.0.4",
+    "next-navigation": "latest",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
@@ -29,13 +30,13 @@
     "redux": "^5.0.0",
     "sass": "^1.69.5",
     "sort-by": "^1.2.0",
-    "unfetch": "^5.0.0",
-    "next-navigation": "latest"
+    "unfetch": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "next-router-mock": "^0.9.10",
     "typescript": "^5"
   }
 }

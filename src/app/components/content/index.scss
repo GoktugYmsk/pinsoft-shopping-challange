@@ -12,7 +12,6 @@
         .container-content__box-left {
             display: flex;
             flex-direction: column;
-            background: white;
             height: 100%;
 
             .container-content__box-left__top {
@@ -83,6 +82,7 @@
             display: flex;
             width: 100%;
             justify-content: flex-start;
+            background: #9EB8D9;
             align-items: center;
             overflow: auto;
 

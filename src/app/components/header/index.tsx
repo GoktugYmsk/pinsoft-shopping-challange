@@ -12,7 +12,7 @@ import './index.scss'
 
 function Header() {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const isBasketActive = useSelector((state: { isBasketActive: { basket: boolean } }) => state.isBasketActive.basket);
 
