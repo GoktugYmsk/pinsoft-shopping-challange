@@ -1,6 +1,11 @@
 'use client'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Header from '@/app/components/header';
+
+import './index.scss'
+import { FaRegUser } from 'react-icons/fa';
+import { GoLock } from "react-icons/go";
 
 
 interface LoginProps {
@@ -23,29 +28,34 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
         }
     };
 
-    const redirectToMain = () => {
-
-        router.push('/main');
-    };
+    const handleSigninClick = () => {
+        router.push('/signin');
+    }
 
     return (
-        <div>
-            <h1>Login Page</h1>
-            <div>
-                <label>
-                    Kullanıcı Adı:
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-                </label>
+        <div className='container-login' >
+            <Header />
+            <div className='container-login__box' >
+                <h1>WELCOME</h1>
+                <div className='container-login__box__top-input' >
+                    <FaRegUser className='container-login__box__user-icon' />
+                    <label>
+                        <input type="text" placeholder='username' value={username} onChange={(e) => setUsername(e.target.value)} />
+                    </label>
+                </div>
+                <div className='container-login__box__down-input' >
+                    <GoLock className='container-login__box__lock-icon' />
+                    <label>
+                        <input type="password" placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                    </label>
+                </div>
+                <button className='container-login__box__login-button' onClick={handleLogin}>LOGIN</button>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                <div className='container-login__box__signup-area' >
+                    <p >Not a member ? </p>
+                    <p className='container-login__box__signup-button' onClick={handleSigninClick}  > Signup</p>
+                </div>
             </div>
-            <div>
-                <label>
-                    Şifre:
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                </label>
-            </div>
-            <button onClick={handleLogin}>Giriş Yap</button>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <button onClick={redirectToMain}>Ana Sayfaya Git</button>
         </div>
     );
 };
