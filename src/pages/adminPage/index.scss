@@ -1,0 +1,21 @@
+.container-adminPage {
+    display: flex;
+    flex-direction: column;
+    height: 100vh !important;
+    background: #9EB8D9;
+    overflow: hidden !important;
+    padding: 40px;
+
+    .container-adminPage__tableBox {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // background: #FFFFFF;
+        width: 100%;
+        height: 100%;
+
+        .container-adminPage__tableBox__box {
+            width: 100%;
+        }
+    }
+}

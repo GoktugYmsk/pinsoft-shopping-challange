@@ -36,7 +36,7 @@ const Signup: React.FC<SignupProps> = () => {
                 <Header />
             </Provider>
             <div className='container-signin__box' >
-                <h1>WELCOME</h1>
+                <h1>REGISTER</h1>
                 <div className='container-signin__box__top-input' >
                     <FaRegUser className='container-signin__box__user-icon' />
                     <label>
