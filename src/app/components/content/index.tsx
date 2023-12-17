@@ -65,6 +65,7 @@ function Content() {
     }, []);
 
     console.log('allProducts', allProducts)
+    console.log('categories', categories)
 
     return (
         <>

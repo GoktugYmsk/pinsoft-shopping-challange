@@ -6,6 +6,8 @@ import Header from '@/app/components/header';
 import './index.scss'
 import { FaRegUser } from 'react-icons/fa';
 import { GoLock } from "react-icons/go";
+import { useDispatch } from 'react-redux';
+import { setIsLogin } from '@/app/components/configure';
 
 
 interface LoginProps {
@@ -18,10 +20,12 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     const [error, setError] = useState('');
     const router = useRouter();
 
+    const dispatch = useDispatch();
+
     const handleLogin = () => {
         if (username === 'user' && password === 'password') {
             onLoginSuccess();
-
+            localStorage.setItem('isLogin', String(true));
             router.push('/main');
         } else {
             setError('Kullanıcı adı veya şifre hatalı');

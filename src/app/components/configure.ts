@@ -11,11 +11,13 @@ interface Product {
 interface ConfigureState {
     basket: boolean;
     basketProducts: Product[];
+    islogin: boolean;
 }
 
 const initialState: ConfigureState = {
     basket: false,
     basketProducts: [],
+    islogin: false,
 };
 
 export const configure = createSlice({
@@ -28,9 +30,12 @@ export const configure = createSlice({
         setBasketProducts: (state, action: PayloadAction<Product[]>) => {
             state.basketProducts = action.payload;
         },
+        setIsLogin: (state, action: PayloadAction<boolean>) => {
+            state.islogin = action.payload;
+        },
     },
 });
 
-export const { setBasket, setBasketProducts } = configure.actions;
+export const { setBasket, setBasketProducts, setIsLogin } = configure.actions;
 
 export default configure.reducer;
