@@ -36,7 +36,9 @@ const Login: React.FC = () => {
                 const matchingUser = users.find(user => user.email === username && user.password === password);
 
                 if (matchingUser) {
-                    localStorage.setItem('isLogin', String(true));
+                    console.log("buraya giriş yaptı");
+                    localStorage.setItem('isLogin', String('true'));
+                    console.log(localStorage.getItem('isLogin'));
                     if (matchingUser.role.name === 'admin') {
                         router.push('/adminPage');
                     } else {

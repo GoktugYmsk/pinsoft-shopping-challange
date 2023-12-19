@@ -1,26 +1,38 @@
-.container-header__navbar {
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 40px;
-    background: #265073;
-    height: 60px;
+.container-header {
 
-
-    .container-header__navbar__icons {
+    .container-header__navbar {
         display: flex;
-        font-size: 30px;
-        gap: 30px;
-        color: white;
+        justify-content: flex-end;
+        padding-right: 40px;
+        background: #265073;
+        height: 60px;
 
-        .container-header__navbar__icons__left {
-            cursor: pointer;
+
+        .container-header_navbar_icons {
+            display: flex;
+            font-size: 30px;
+            gap: 30px;
+            color: white;
+
+            .container-header_navbar__icons_left {
+                cursor: pointer;
+                color: white;
+            }
+
+            .container-header_navbaricons_right {
+                cursor: pointer;
+                color: white;
+            }
+
+            .container-header_navbar__icons_logout {
+                cursor: pointer;
+                color: white;
+            }
         }
 
-        .container-header__navbar__icons__rigth {
-            cursor: pointer;
-        }
 
-        .container-header__navbar__icons__logout {
+
+        .container-header_navbaricons_logout {
             cursor: pointer;
         }
     }

@@ -1,5 +1,4 @@
-'use client'
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import { FaRegUser } from 'react-icons/fa';
 import { SlBasket } from 'react-icons/sl';
@@ -16,31 +15,38 @@ function Header() {
 
     const isBasketActive = useSelector((state: { isBasketActive: { basket: boolean } }) => state.isBasketActive.basket);
     let islogin: string | null = null;
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean | undefined>(undefined);
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            islogin = localStorage.getItem('isLogin');
-        }
-    }, []);
+        const fetchData = async () => {
+            if (typeof window !== 'undefined') {
+                islogin = localStorage.getItem('isLogin');
+                console.log('Furkan', islogin);
+                let loggedIn = islogin === 'true';
+                return loggedIn;
+            }
+        };
+
+        fetchData().then((value) => {
+            setIsLoggedIn(value);
+        });
+    }, [islogin]);
 
     const handleLogoutClick = () => {
+        localStorage.setItem('isLogin', String('false'))
         router.push('/main');
     };
-
-    const isLoggedIn = islogin === 'true';
-
-    console.log('isLoggedIn', isLoggedIn);
 
     return (
         <div className={`container-header ${isBasketActive ? 'opacityActive' : ''}`}>
             <div className="container-header__navbar">
                 <Navbar expand="lg" variant="dark">
-                    <div className="container-header__navbar__icons">
-                        <FaRegUser className="container-header__navbar__icons__left" />
-                        <SlBasket onClick={() => dispatch(setBasket(true))} className="container-header__navbar__icons__right" />
-                        {isLoggedIn &&
-                            <FiLogOut className="container-header__navbar__icons__logout" onClick={handleLogoutClick} />
-                        }
+                    <div className="container-header_navbar_icons">
+                        <FaRegUser className="container-header_navbar__icons_left" />
+                        <SlBasket onClick={() => dispatch(setBasket(true))} className="container-header_navbaricons_right" />
+                        {isLoggedIn && (
+                            <FiLogOut className="container-header_navbar__icons_logout" onClick={handleLogoutClick} />
+                        )}
                     </div>
                 </Navbar>
             </div>

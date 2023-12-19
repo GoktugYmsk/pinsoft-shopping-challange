@@ -11,13 +11,13 @@ interface Product {
 interface ConfigureState {
     basket: boolean;
     basketProducts: Product[];
-    islogin: boolean;
+    islogin: string;
 }
 
 const initialState: ConfigureState = {
     basket: false,
     basketProducts: [],
-    islogin: false,
+    islogin: 'false',
 };
 
 export const configure = createSlice({
@@ -30,7 +30,7 @@ export const configure = createSlice({
         setBasketProducts: (state, action: PayloadAction<Product[]>) => {
             state.basketProducts = action.payload;
         },
-        setIsLogin: (state, action: PayloadAction<boolean>) => {
+        setIsLogin: (state, action: PayloadAction<string>) => {
             state.islogin = action.payload;
         },
     },
