@@ -4,9 +4,10 @@ import { useRouter } from 'next/navigation';
 import Header from '@/app/components/header';
 import { FaRegUser } from 'react-icons/fa';
 import { GoLock } from "react-icons/go";
-import { useDispatch } from 'react-redux';
-import { setIsLogin } from '@/app/components/configure';
-import '../login/index.scss'
+import '../pages/login/index.scss'
+import { Provider } from 'react-redux';
+import { store } from '@/app/store/store';
+import axios from 'axios';
 
 interface Role {
     id: number;
@@ -20,26 +21,21 @@ interface User {
     role: Role;
 }
 
-interface LoginProps {
-    onLoginSuccess: () => void;
-}
 
-const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
+const Login: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const router = useRouter();
-    const dispatch = useDispatch();
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('https://pinsoft.onrender.com/user_account');
-            if (response.ok) {
-                const users: User[] = await response.json();
+            const response = await axios.get('https://pinsoft.onrender.com/user_account');
+            if (response.status === 200) {
+                const users: User[] = response.data;
                 const matchingUser = users.find(user => user.email === username && user.password === password);
 
                 if (matchingUser) {
-                    onLoginSuccess();
                     localStorage.setItem('isLogin', String(true));
                     if (matchingUser.role.name === 'admin') {
                         router.push('/adminPage');
@@ -64,7 +60,9 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 
     return (
         <div className='container-login'>
-            <Header />
+            <Provider store={store}>
+                <Header />
+            </Provider>
             <div className='container-login__box'>
                 <h1>WELCOME</h1>
                 <div className='container-login__box__top-input'>

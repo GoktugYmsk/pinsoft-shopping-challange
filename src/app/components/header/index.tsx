@@ -24,7 +24,7 @@ function Header() {
     }, []);
 
     const handleLogoutClick = () => {
-        router.push('/');
+        router.push('/main');
     };
 
     const isLoggedIn = islogin === 'true';
@@ -38,9 +38,9 @@ function Header() {
                     <div className="container-header__navbar__icons">
                         <FaRegUser className="container-header__navbar__icons__left" />
                         <SlBasket onClick={() => dispatch(setBasket(true))} className="container-header__navbar__icons__right" />
-                        {isLoggedIn && (
+                        {isLoggedIn &&
                             <FiLogOut className="container-header__navbar__icons__logout" onClick={handleLogoutClick} />
-                        )}
+                        }
                     </div>
                 </Navbar>
             </div>

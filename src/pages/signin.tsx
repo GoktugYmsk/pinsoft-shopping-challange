@@ -18,12 +18,30 @@ const Signup: React.FC<SignupProps> = () => {
     const [password, setPassword] = useState('');
     const router = useRouter();
 
-    const handleSignup = () => {
+    const handleSignin = async () => {
+        try {
+            const response = await fetch('https://pinsoft.onrender.com/user_account', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    role: {
+                        name: 'admin',
+                    },
+                }),
+            });
 
-    };
-
-    const handleSignin = () => {
-
+            if (response.ok) {
+                console.log('Kullanıcı başarıyla kaydedildi.');
+            } else {
+                console.error('Kullanıcı kaydedilemedi. Hata kodu:', response.status);
+            }
+        } catch (error) {
+            console.error('Bir hata oluştu:', error);
+        }
     };
 
     const handleLoginClick = () => {
@@ -44,15 +62,14 @@ const Signup: React.FC<SignupProps> = () => {
                     </label>
                 </div>
                 <div className='container-signin__box__down-input' >
-                    <GoLock className='container-signin__box__lock-icon' />
                     <label>
-                        <input type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <input type="text" placeholder='E-mail' value={email} onChange={(e) => setEmail(e.target.value)} />
                     </label>
                 </div>
                 <div className='container-signin__box__down-input' >
                     <GoLock className='container-signin__box__lock-icon' />
                     <label>
-                        <input type="password" placeholder=' Rewrite Password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <input type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
                     </label>
                 </div>
                 <button className='container-signin__box__signin-button' onClick={handleSignin} >SIGN UP</button>

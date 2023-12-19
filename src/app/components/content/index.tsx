@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import Basket from '../header/basket';
 import LeftContent from './leftContent';
 import RightContent from './rightContent';
+import Button from 'react-bootstrap/Button';
+import { useRouter } from 'next/navigation';
 
 import axios from 'axios';
 import './index.scss';
@@ -31,6 +33,8 @@ function Content() {
     const [allProducts, setAllProducts] = useState<Product[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
     const [fiyatAraligi, setFiyatAraligi] = useState<[number, number]>([0, 1000]);
+
+    const router = useRouter();
 
     const isBasketActive = useSelector((state: RootState) => state.isBasketActive.basket);
 
@@ -67,6 +71,10 @@ function Content() {
     console.log('allProducts', allProducts)
     console.log('categories', categories)
 
+    const handleSigninClick = () => {
+        router.push('/login');
+    }
+
     return (
         <>
             <div className={`container-content ${isBasketActive ? 'opacityActive' : ''}`}>
@@ -81,6 +89,7 @@ function Content() {
                     />
                     <RightContent products={allProducts} urunleriFiltrele={urunleriFiltrele} />
                 </div>
+                <Button className='container-content__signin-button' onClick={handleSigninClick} variant="light">Sign in</Button>
             </div>
             {isBasketActive && <Basket />}
         </>

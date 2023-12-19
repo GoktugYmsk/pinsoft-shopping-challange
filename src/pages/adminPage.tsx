@@ -12,10 +12,9 @@ const AdminPage: React.FC = () => {
             <Provider store={store}>
                 <Header />
             </Provider>
-
             <div className='container-adminPage'>
-
                 <div className='container-adminPage__tableBox'>
+                    <h2>Products</h2>
                     <Table className='container-adminPage__tableBox__box' striped bordered hover>
                         <thead>
                             <tr>
@@ -28,32 +27,38 @@ const AdminPage: React.FC = () => {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>1</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
+                                <td>Ürün resmi eklenecek</td>
+                                <td>Madame çanta</td>
+                                <td>Bordo çanta</td>
+                                <td>150.60</td>
+                                <td>Giyim</td>
                             </tr>
                             <tr>
-                                <td>2</td>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
+                                <td>Ürün resmi eklenecek</td>
+                                <td>Nokia 3310</td>
+                                <td>Telefon</td>
+                                <td>25.0</td>
+                                <td>Elektronik</td>
                             </tr>
                             <tr>
-                                <td>3</td>
+                                <td>Ürün resmi eklenecek</td>
+                                <td >Paranın Psikolojisi</td>
+                                <td>Kitap</td>
+                                <td>200.68</td>
+                                <td>Kitap</td>
+                            </tr>
+                            {/* <tr>
+                                <td>Ürün resmi eklenecek</td>
                                 <td colSpan={2}>Larry the Bird</td>
                                 <td>@twitter</td>
+                                <td>Giyim</td>
                             </tr>
                             <tr>
-                                <td>4</td>
+                                <td>Ürün resmi eklenecek</td>
                                 <td colSpan={2}>Larry the Bird</td>
                                 <td>@twitter</td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td colSpan={2}>Larry the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
+                                <td>Giyim</td>
+                            </tr> */}
                         </tbody>
                     </Table>
                 </div>

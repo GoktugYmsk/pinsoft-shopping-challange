@@ -1,21 +1,43 @@
 .container-adminPage {
     display: flex;
     flex-direction: column;
-    height: 100vh !important;
+    height: 100vh;
     background: #9EB8D9;
-    overflow: hidden !important;
     padding: 40px;
 
     .container-adminPage__tableBox {
         display: flex;
         align-items: center;
         justify-content: center;
-        // background: #FFFFFF;
-        width: 100%;
-        height: 100%;
+        flex-direction: column;
+        background: #FFFFFF;
+        height: 600px;
+
 
         .container-adminPage__tableBox__box {
+            height: 600px;
             width: 100%;
+
+            .td,
+            th,
+            tr {
+                border: 1px solid black;
+                width: 200px;
+            }
+
+            tr {
+                td {
+                    height: 50px !important;
+                }
+            }
+
+            th {
+                background: #B9B9B9;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
         }
     }
 }

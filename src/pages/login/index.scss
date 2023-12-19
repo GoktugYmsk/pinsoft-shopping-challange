@@ -1,6 +1,8 @@
 .container-login {
     display: flex;
     flex-direction: column;
+    background: #9EB8D9;
+    height: 100vh;
 
     .container-login__box {
         display: flex;
@@ -27,6 +29,7 @@
             background: #265073;
             color: white;
             border-style: none;
+            cursor: pointer;
         }
 
         input {

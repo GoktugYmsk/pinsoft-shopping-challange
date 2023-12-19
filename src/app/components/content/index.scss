@@ -4,6 +4,15 @@
     height: 100vh !important;
     width: 100%;
 
+    .container-content__signin-button {
+        position: absolute;
+        width: 179px;
+        height: 47px;
+        top: 70px;
+        right: 100px;
+        border-radius: 10px;
+    }
+
     .container-content__box {
         display: flex;
         gap: 20px;
@@ -12,6 +21,7 @@
         .container-content__box-left {
             display: flex;
             flex-direction: column;
+            background: #ffff;
             height: 100%;
 
             .container-content__box-left__top {
@@ -117,6 +127,7 @@
             }
         }
     }
+
 }
 
 .opacityActive {
