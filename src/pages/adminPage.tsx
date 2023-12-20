@@ -5,8 +5,16 @@ import Header from '@/app/components/header';
 import './adminPage/index.scss'
 import { Provider } from 'react-redux';
 import { store } from '@/app/store/store';
+import Button from 'react-bootstrap/Button';
+import { useRouter } from 'next/router';
 
 const AdminPage: React.FC = () => {
+    const router = useRouter();
+
+    const addProductClick = () => {
+        router.push('/addProduct');
+    }
+
     return (
         <>
             <Provider store={store}>
@@ -14,7 +22,13 @@ const AdminPage: React.FC = () => {
             </Provider>
             <div className='container-adminPage'>
                 <div className='container-adminPage__tableBox'>
-                    <h2>Products</h2>
+                    <div className='container-adminPage__tableBox__top' >
+                        <h2>Products</h2>
+                        <div className='container-adminPage__tableBox__top__buttons'>
+                            <Button onClick={addProductClick} className='container-adminPage__tableBox__top__buttons__left' variant="link">New Product</Button>
+                            <Button className='container-adminPage__tableBox__top__buttons__right' variant="link">Export To Excel</Button>
+                        </div>
+                    </div>
                     <Table className='container-adminPage__tableBox__box' striped bordered hover>
                         <thead>
                             <tr>

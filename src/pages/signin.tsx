@@ -7,6 +7,7 @@ import { GoLock } from 'react-icons/go';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store/store';
 import '../pages/signin/signin.scss'
+import axios from 'axios';
 
 interface SignupProps {
     onSignupSuccess: () => void;
@@ -18,34 +19,26 @@ const Signup: React.FC<SignupProps> = () => {
     const [password, setPassword] = useState('');
     const router = useRouter();
 
-    const handleSignin = async () => {
+    const handleSignup = async () => {
         try {
-            const response = await fetch('https://pinsoft.onrender.com/user_account', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password,
-                    role: {
-                        name: 'admin',
-                    },
-                }),
+            const response = await axios.post('https://pinsoft.onrender.com/register', {
+                username: fullName,
+                email: email,
+                password: password,
             });
 
-            if (response.ok) {
+            console.log('response', response);
+
+            if (response.status === 200) {
                 console.log('Kullanıcı başarıyla kaydedildi.');
+                router.push('/login');
             } else {
                 console.error('Kullanıcı kaydedilemedi. Hata kodu:', response.status);
             }
         } catch (error) {
             console.error('Bir hata oluştu:', error);
         }
-    };
-
-    const handleLoginClick = () => {
-        router.push('/login');
+        console.log('username', fullName, 'email', email, 'password', password)
     };
 
     return (
@@ -63,16 +56,16 @@ const Signup: React.FC<SignupProps> = () => {
                 </div>
                 <div className='container-signin__box__down-input' >
                     <label>
-                        <input type="text" placeholder='E-mail' value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <input type="text" placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)} />
                     </label>
                 </div>
                 <div className='container-signin__box__down-input' >
                     <GoLock className='container-signin__box__lock-icon' />
                     <label>
-                        <input type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <input type="password" placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)} />
                     </label>
                 </div>
-                <button className='container-signin__box__signin-button' onClick={handleSignin} >SIGN UP</button>
+                <button className='container-signin__box__signin-button' onClick={handleSignup} >SIGN UP</button>
             </div>
         </div>
     );
