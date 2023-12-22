@@ -21,7 +21,6 @@ function Header() {
         const fetchData = async () => {
             if (typeof window !== 'undefined') {
                 islogin = localStorage.getItem('isLogin');
-                console.log('Furkan', islogin);
                 let loggedIn = islogin === 'true';
                 return loggedIn;
             }

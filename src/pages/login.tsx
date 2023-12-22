@@ -30,31 +30,50 @@ const Login: React.FC = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.get('https://pinsoft.onrender.com/user_account');
-            if (response.status === 200) {
-                const users: User[] = response.data;
-                const matchingUser = users.find(user => user.email === username && user.password === password);
 
-                if (matchingUser) {
-                    console.log("buraya giriş yaptı");
-                    localStorage.setItem('isLogin', String('true'));
-                    console.log(localStorage.getItem('isLogin'));
-                    if (matchingUser.role.name === 'admin') {
-                        router.push('/adminPage');
+            const authResponse = await axios.post('https://pinsoft.onrender.com/authenticate', {
+                email: username,
+                password: password,
+            });
+
+            if (authResponse.status === 200 && authResponse.data.token) {
+                const token = authResponse.data.token;
+                console.log('token', token)
+
+
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+
+                const response = await axios.get('https://pinsoft.onrender.com/user_account');
+
+                if (response.status === 200) {
+                    const users: User[] = response.data;
+                    const matchingUser = users.find(user => user.email === username);
+
+                    if (matchingUser) {
+                        console.log("buraya giriş yaptı");
+                        localStorage.setItem('isLogin', String('true'));
+                        console.log(localStorage.getItem('isLogin'));
+                        if (matchingUser.role.name === 'admin') {
+                            router.push('/adminPage');
+                        } else {
+                            router.push('/main');
+                        }
                     } else {
-                        router.push('/main');
+                        setError('Kullanıcı adı veya şifre hatalı');
                     }
                 } else {
-                    setError('Kullanıcı adı veya şifre hatalı');
+                    setError('Server error. Please try again later.');
                 }
             } else {
-                setError('Server error. Please try again later.');
+                setError('Authentication failed. Please check your credentials and try again.');
             }
         } catch (error) {
             console.error('Error during login:', error);
             setError('An unexpected error occurred. Please try again later.');
         }
     };
+
 
     const handleSigninClick = () => {
         router.push('/signin');

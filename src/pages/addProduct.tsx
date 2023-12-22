@@ -28,9 +28,9 @@ const AddProduct: React.FC = () => {
                         <input type="number" placeholder='Price' />
                         <select>
                             <option disabled selected value="">Category</option>
-                            <option value="option1">Seçenek 1</option>
-                            <option value="option2">Seçenek 2</option>
-                            <option value="option3">Seçenek 3</option>
+                            <option value="Eletronik">Eletronik</option>
+                            <option value="Giyim">Giyim</option>
+                            <option value="Kitap">Kitap</option>
                         </select>
                     </div>
 
