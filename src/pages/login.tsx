@@ -1,13 +1,13 @@
-'use client'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/app/components/header';
 import { FaRegUser } from 'react-icons/fa';
 import { GoLock } from "react-icons/go";
-import '../pages/login/index.scss'
+import '../pages/login/index.scss';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store/store';
 import axios from 'axios';
+
 
 interface Role {
     id: number;
@@ -26,44 +26,56 @@ const Login: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+
     const router = useRouter();
-
     const handleLogin = async () => {
-        try {
 
-            const authResponse = await axios.post( process.env.NEXT_PUBLIC_API_URL + 'authenticate', {
-                email: username,
+        console.log('VERİ GÖNDERİLECEK')
+        try {
+            const authResponse = await axios.post(process.env.NEXT_PUBLIC_API_URL + 'authenticate', {
+                username: username,
                 password: password,
             });
+            console.log('authResponse', authResponse);
+
+
+            const token = authResponse.data.token;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+            localStorage.setItem('userTokenTry', token);
+            localStorage.removeItem('userToken');
+            console.log('Token:', token);
 
             if (authResponse.status === 200 && authResponse.data.token) {
-                const token = authResponse.data.token;
-                console.log('token', token)
+                try {
+                    const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + 'user_account');
 
+                    console.log('User Account Response:', response);
 
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                    if (response.status === 200) {
+                        const users: User[] = response.data;
+                        const matchingUser = users.find(user => user.email === username);
 
+                        if (matchingUser) {
+                            console.log("Login successful");
+                            localStorage.setItem('isLogin', String(true));
 
-                const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + 'user_account');
-
-                if (response.status === 200) {
-                    const users: User[] = response.data;
-                    const matchingUser = users.find(user => user.email === username);
-
-                    if (matchingUser) {
-                        console.log("buraya giriş yaptı");
-                        localStorage.setItem('isLogin', String('true'));
-                        console.log(localStorage.getItem('isLogin'));
-                        if (matchingUser.role.name === 'admin') {
-                            router.push('/adminPage');
+                            if (matchingUser.role.name === 'admin') {
+                                router.push('/adminPage');
+                            } else {
+                                router.push('/main');
+                            }
                         } else {
-                            router.push('/main');
+                            setError('Invalid username or password');
                         }
+                    } else if (response.status === 403) {
+                        setError('Unauthorized. Insufficient permissions to access user account.');
                     } else {
-                        setError('Kullanıcı adı veya şifre hatalı');
+                        setError('Server error. Please try again later.');
                     }
-                } else {
-                    setError('Server error. Please try again later.');
+                } catch (error) {
+                    console.error('Error during user_account request:', error);
+                    setError('An unexpected error occurred. Please try again later.');
                 }
             } else {
                 setError('Authentication failed. Please check your credentials and try again.');
@@ -71,6 +83,7 @@ const Login: React.FC = () => {
         } catch (error) {
             console.error('Error during login:', error);
             setError('An unexpected error occurred. Please try again later.');
+            console.log('Kod Patladı')
         }
     };
 
@@ -78,6 +91,7 @@ const Login: React.FC = () => {
     const handleSigninClick = () => {
         router.push('/signin');
     };
+
 
     return (
         <div className='container-login'>
