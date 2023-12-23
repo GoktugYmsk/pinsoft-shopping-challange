@@ -24,7 +24,7 @@ const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setF
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://pinsoft.onrender.com/category');
+                const response = await fetch(process.env.NEXT_PUBLIC_API_URL +'category');
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }

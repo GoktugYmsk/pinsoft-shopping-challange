@@ -31,7 +31,7 @@ const Login: React.FC = () => {
     const handleLogin = async () => {
         try {
 
-            const authResponse = await axios.post('https://pinsoft.onrender.com/authenticate', {
+            const authResponse = await axios.post( process.env.NEXT_PUBLIC_API_URL + 'authenticate', {
                 email: username,
                 password: password,
             });
@@ -44,7 +44,7 @@ const Login: React.FC = () => {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
 
-                const response = await axios.get('https://pinsoft.onrender.com/user_account');
+                const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + 'user_account');
 
                 if (response.status === 200) {
                     const users: User[] = response.data;

@@ -21,7 +21,7 @@ const Signup: React.FC<SignupProps> = () => {
 
     const handleSignup = async () => {
         try {
-            const response = await axios.post('https://pinsoft.onrender.com/register', {
+            const response = await axios.post( (process.env.NEXT_PUBLIC_API_URL + 'register'), {
                 username: fullName,
                 email: email,
                 password: password,

@@ -52,8 +52,8 @@ function Content() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const productsResponse = await axios.get('https://pinsoft.onrender.com/products');
-                const categoriesResponse = await axios.get('https://pinsoft.onrender.com/category');
+                const productsResponse = await axios.get(process.env.NEXT_PUBLIC_API_URL + 'products');
+                const categoriesResponse = await axios.get(process.env.NEXT_PUBLIC_API_URL + 'category');
 
                 const productsData = productsResponse.data;
                 const categoriesData = categoriesResponse.data;
