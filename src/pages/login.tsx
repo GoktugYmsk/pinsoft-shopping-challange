@@ -7,6 +7,7 @@ import '../pages/login/index.scss';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store/store';
 import axios from 'axios';
+import api from '../../intercepter'
 
 
 interface Role {
@@ -19,18 +20,20 @@ interface User {
     email: string;
     password: string;
     role: Role;
+    data: any;
+    username: string;
 }
 
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [data, setData] = useState()
     const [error, setError] = useState('');
 
     const router = useRouter();
     const handleLogin = async () => {
-
-        console.log('VERİ GÖNDERİLECEK')
+        console.log('istek atılıyor');
         try {
             const authResponse = await axios.post(process.env.NEXT_PUBLIC_API_URL + 'authenticate', {
                 username: username,
@@ -38,54 +41,44 @@ const Login: React.FC = () => {
             });
             console.log('authResponse', authResponse);
 
-
             const token = authResponse.data.token;
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-            localStorage.setItem('userTokenTry', token);
-            localStorage.removeItem('userToken');
+            sessionStorage.setItem('userTokenTry', token);
             console.log('Token:', token);
 
-            if (authResponse.status === 200 && authResponse.data.token) {
-                try {
-                    const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + 'user_account');
+            const response = await api.get('/user_account');
 
-                    console.log('User Account Response:', response);
+            setData(response.data);
+            console.log('User Account Response:', response);
 
-                    if (response.status === 200) {
-                        const users: User[] = response.data;
-                        const matchingUser = users.find(user => user.email === username);
+            if (response.status === 200) {
+                const users: User[] = response.data;
+                const matchingUser = users.find(user => user.username === username);
 
-                        if (matchingUser) {
-                            console.log("Login successful");
-                            localStorage.setItem('isLogin', String(true));
+                if (matchingUser) {
+                    console.log('Login successful');
+                    localStorage.setItem('isLogin', String(true));
 
-                            if (matchingUser.role.name === 'admin') {
-                                router.push('/adminPage');
-                            } else {
-                                router.push('/main');
-                            }
-                        } else {
-                            setError('Invalid username or password');
-                        }
-                    } else if (response.status === 403) {
-                        setError('Unauthorized. Insufficient permissions to access user account.');
+                    if (matchingUser.role.name === 'admin') {
+                        router.push('/adminPage');
                     } else {
-                        setError('Server error. Please try again later.');
+                        router.push('/main');
                     }
-                } catch (error) {
-                    console.error('Error during user_account request:', error);
-                    setError('An unexpected error occurred. Please try again later.');
+                } else {
+                    setError('Invalid username or password');
                 }
+            } else if (response.status === 403) {
+                setError('Unauthorized. Insufficient permissions to access user account.');
             } else {
-                setError('Authentication failed. Please check your credentials and try again.');
+                setError('Server error. Please try again later.');
             }
         } catch (error) {
             console.error('Error during login:', error);
             setError('An unexpected error occurred. Please try again later.');
-            console.log('Kod Patladı')
+            console.log('Kod Patladı');
         }
     };
+
 
 
     const handleSigninClick = () => {

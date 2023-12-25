@@ -34,9 +34,14 @@ function Content() {
     const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
     const [fiyatAraligi, setFiyatAraligi] = useState<[number, number]>([0, 1000]);
 
+    let islogin: string | null = null;
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean | undefined>(undefined);
+
     const router = useRouter();
 
     const isBasketActive = useSelector((state: RootState) => state.isBasketActive.basket);
+
+    useEffect
 
     console.log('selectedCategories', selectedCategories)
 
@@ -48,6 +53,30 @@ function Content() {
             (selectedCategories.length === 0 || selectedCategories.includes(urun.id))
         );
     };
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (typeof window !== 'undefined') {
+                let islogin = sessionStorage.getItem('userTokenTry');
+                if (islogin) {
+                    let loggedIn = true;
+                    return loggedIn;
+                }
+                else if (!islogin) {
+                    let loggedIn = false;
+                    return loggedIn;
+                }
+
+            }
+        };
+
+        fetchData().then((value) => {
+            setIsLoggedIn(value);
+        });
+    }, []);
+
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -67,6 +96,7 @@ function Content() {
 
         fetchData();
     }, []);
+
 
     console.log('allProducts', allProducts)
     console.log('categories', categories)
@@ -89,7 +119,9 @@ function Content() {
                     />
                     <RightContent products={allProducts} urunleriFiltrele={urunleriFiltrele} />
                 </div>
-                <Button className='container-content__signin-button' onClick={handleSigninClick} variant="light">Sign in</Button>
+                {!isLoggedIn &&
+                    <Button className='container-content__signin-button' onClick={handleSigninClick} variant="light">Sign in</Button>
+                }
             </div>
             {isBasketActive && <Basket />}
         </>

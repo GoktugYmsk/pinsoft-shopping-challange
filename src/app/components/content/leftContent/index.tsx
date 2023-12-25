@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import api from '../../../../../intercepter'
 
 interface LeftContentProps {
     setFiltre: React.Dispatch<React.SetStateAction<string>>;
@@ -24,12 +25,13 @@ const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setF
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(process.env.NEXT_PUBLIC_API_URL +'category');
-                if (!response.ok) {
+                const response = await api.get('/category');
+
+                if (response.status !== 200) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                const data = await response.json();
+                const data = await response.data;
                 setCategories(data);
             } catch (error) {
                 console.error('Veri alınamadı:', error);
@@ -38,6 +40,7 @@ const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setF
 
         fetchData();
     }, []);
+
 
     const handleCheckboxChange = (categoryId: number) => {
         setSelectedCategories((prevSelectedCategories) => {

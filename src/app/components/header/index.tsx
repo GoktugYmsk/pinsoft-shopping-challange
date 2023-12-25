@@ -32,8 +32,12 @@ function Header() {
     }, [islogin]);
 
     const handleLogoutClick = () => {
-        localStorage.setItem('isLogin', String('false'))
+        localStorage.setItem('isLogin', String('false'));
+        sessionStorage.removeItem('userTokenTry');
+        console.log('Çıkış yapıldı');
         router.push('/main');
+        console.log('Maine Yönlendiriliyor')
+        window.location.reload();
     };
 
     return (
