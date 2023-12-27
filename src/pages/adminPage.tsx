@@ -1,12 +1,14 @@
 'use client'
 import React from 'react';
+import { Provider } from 'react-redux';
+import { useRouter } from 'next/router';
+
 import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
+
+import { store } from '@/app/store/store';
 import Header from '@/app/components/header';
 import './adminPage/index.scss'
-import { Provider } from 'react-redux';
-import { store } from '@/app/store/store';
-import Button from 'react-bootstrap/Button';
-import { useRouter } from 'next/router';
 
 const AdminPage: React.FC = () => {
     const router = useRouter();

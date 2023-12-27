@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setBasket } from '../../configure';
-import { RootState } from '@/app/store/store';
 
 import Button from 'react-bootstrap/Button';
+
+import { setBasket } from '../../configure';
+import { RootState } from '@/app/store/store';
 import './index.scss';
 
 

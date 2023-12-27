@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import ProductPopup from './productPopup';
-
-
-import { setBasketProducts } from '../../configure';
 import { useDispatch, useSelector } from 'react-redux';
+
+import Button from 'react-bootstrap/Button';
+
+import ProductPopup from './productPopup';
+import { setBasketProducts } from '../../configure';
 
 interface Product {
     id: number;

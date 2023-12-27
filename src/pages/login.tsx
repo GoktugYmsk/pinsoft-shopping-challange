@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Header from '@/app/components/header';
-import { FaRegUser } from 'react-icons/fa';
-import { GoLock } from "react-icons/go";
-import '../pages/login/index.scss';
+'use client'
+import { useState } from 'react';
 import { Provider } from 'react-redux';
-import { store } from '@/app/store/store';
+import { useRouter } from 'next/navigation';
+
 import axios from 'axios';
+import { GoLock } from "react-icons/go";
+import { FaRegUser } from 'react-icons/fa';
+
 import api from '../../intercepter'
+import { store } from '@/app/store/store';
+import Header from '@/app/components/header';
+
+import '../pages/login/index.scss';
 
 
 interface Role {

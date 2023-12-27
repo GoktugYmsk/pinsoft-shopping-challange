@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import { FaRegUser } from 'react-icons/fa';
-import { SlBasket } from 'react-icons/sl';
-import { useDispatch, useSelector } from 'react-redux';
-import { FiLogOut } from 'react-icons/fi';
-import { setBasket } from '../configure';
 import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { SlBasket } from 'react-icons/sl';
+import { FiLogOut } from 'react-icons/fi';
+import { FaRegUser } from 'react-icons/fa';
+import Navbar from 'react-bootstrap/Navbar';
+
+import { setBasket } from '../configure';
 import './index.scss';
 
 function Header() {

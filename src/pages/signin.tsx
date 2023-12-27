@@ -1,13 +1,16 @@
 'use client'
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import Header from '@/app/components/header';
-import { FaRegUser } from 'react-icons/fa';
-import { GoLock } from 'react-icons/go';
 import { Provider } from 'react-redux';
-import { store } from '@/app/store/store';
-import '../pages/signin/signin.scss'
+
 import axios from 'axios';
+import { GoLock } from 'react-icons/go';
+import { FaRegUser } from 'react-icons/fa';
+
+import { store } from '@/app/store/store';
+import Header from '@/app/components/header';
+
+import '../pages/signin/signin.scss'
 
 interface SignupProps {
     onSignupSuccess: () => void;
@@ -21,7 +24,7 @@ const Signup: React.FC<SignupProps> = () => {
 
     const handleSignup = async () => {
         try {
-            const response = await axios.post( (process.env.NEXT_PUBLIC_API_URL + 'register'), {
+            const response = await axios.post((process.env.NEXT_PUBLIC_API_URL + 'register'), {
                 username: fullName,
                 email: email,
                 password: password,

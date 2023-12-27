@@ -1,12 +1,12 @@
 'use client'
+import Head from 'next/head';
 import styles from './page.module.css';
 import { Provider } from 'react-redux';
-import Head from 'next/head';
-import Login from '@/pages/login';
-import { store } from './store/store';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import CustomComponent from '@/pages/main';
 import { useRouter } from 'next/navigation';
+
+import { store } from './store/store';
+import CustomComponent from '@/pages/main';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './page.module.css'
 
 const Home: React.FC = () => {

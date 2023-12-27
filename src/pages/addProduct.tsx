@@ -1,11 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import '../pages/addProduct/index.scss';
-import Header from '@/app/components/header';
 import { Provider } from 'react-redux';
-import { store } from '@/app/store/store';
+
 import Button from 'react-bootstrap/Button';
+
 import api from '../../intercepter';
+import { store } from '@/app/store/store';
+import Header from '@/app/components/header';
+import '../pages/addProduct/index.scss';
 
 const AddProduct: React.FC = () => {
     const [productName, setProductName] = useState('');

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
+
+import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+
 import Basket from '../header/basket';
 import LeftContent from './leftContent';
 import RightContent from './rightContent';
-import Button from 'react-bootstrap/Button';
-import { useRouter } from 'next/navigation';
-
-import axios from 'axios';
 import './index.scss';
 
 interface RootState {
