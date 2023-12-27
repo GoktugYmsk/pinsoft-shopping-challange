@@ -63,18 +63,6 @@ const AdminPage: React.FC = () => {
                                 <td>200.68</td>
                                 <td>Kitap</td>
                             </tr>
-                            {/* <tr>
-                                <td>Ürün resmi eklenecek</td>
-                                <td colSpan={2}>Larry the Bird</td>
-                                <td>@twitter</td>
-                                <td>Giyim</td>
-                            </tr>
-                            <tr>
-                                <td>Ürün resmi eklenecek</td>
-                                <td colSpan={2}>Larry the Bird</td>
-                                <td>@twitter</td>
-                                <td>Giyim</td>
-                            </tr> */}
                         </tbody>
                     </Table>
                 </div>

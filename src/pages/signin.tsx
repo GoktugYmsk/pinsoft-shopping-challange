@@ -30,10 +30,7 @@ const Signup: React.FC<SignupProps> = () => {
                 password: password,
             });
 
-            console.log('response', response);
-
             if (response.status === 200) {
-                console.log('Kullanıcı başarıyla kaydedildi.');
                 router.push('/login');
             } else {
                 console.error('Kullanıcı kaydedilemedi. Hata kodu:', response.status);
@@ -41,7 +38,6 @@ const Signup: React.FC<SignupProps> = () => {
         } catch (error) {
             console.error('Bir hata oluştu:', error);
         }
-        console.log('username', fullName, 'email', email, 'password', password)
     };
 
     return (

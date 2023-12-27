@@ -47,7 +47,7 @@ function Header() {
                 <Navbar expand="lg" variant="dark">
                     <div className="container-header_navbar_icons">
                         <FaRegUser className="container-header_navbar__icons_left" />
-                        <SlBasket onClick={() => dispatch(setBasket(true))} className="container-header_navbaricons_right" />
+                        <SlBasket onClick={() => dispatch(setBasket(true))} className="container-header__navbar__icons__rigth" />
                         {isLoggedIn && (
                             <FiLogOut className="container-header_navbar__icons_logout" onClick={handleLogoutClick} />
                         )}

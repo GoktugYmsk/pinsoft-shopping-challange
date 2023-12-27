@@ -37,30 +37,23 @@ const Login: React.FC = () => {
 
     const router = useRouter();
     const handleLogin = async () => {
-        console.log('istek atılıyor');
         try {
             const authResponse = await axios.post(process.env.NEXT_PUBLIC_API_URL + 'authenticate', {
                 username: username,
                 password: password,
             });
-            console.log('authResponse', authResponse);
 
             const token = authResponse.data.token;
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             sessionStorage.setItem('userTokenTry', token);
-            console.log('Token:', token);
-
             const response = await api.get('/user_account');
-
             setData(response.data);
-            console.log('User Account Response:', response);
 
             if (response.status === 200) {
                 const users: User[] = response.data;
                 const matchingUser = users.find(user => user.username === username);
 
                 if (matchingUser) {
-                    console.log('Login successful');
                     localStorage.setItem('isLogin', String(true));
 
                     if (matchingUser.role.name === 'admin') {
@@ -79,7 +72,6 @@ const Login: React.FC = () => {
         } catch (error) {
             console.error('Error during login:', error);
             setError('An unexpected error occurred. Please try again later.');
-            console.log('Kod Patladı');
         }
     };
 
