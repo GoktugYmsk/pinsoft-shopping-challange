@@ -11,18 +11,19 @@ import '../pages/addProduct/index.scss';
 
 const AddProduct: React.FC = () => {
     const [productName, setProductName] = useState('');
-    const [photo, setPhoto] = useState<File | string>('');
+    // const [photo, setPhoto] = useState<File | string>('');
     const [price, setPrice] = useState(0);
     const [category, setCategory] = useState('');
     const [explanation, setExplanation] = useState('');
+    const [idCount, setIdCount] = useState();
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+    // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const file = e.target.files?.[0];
 
-        if (file) {
-            setPhoto(file);
-        }
-    };
+    //     if (file) {
+    //         setPhoto(file);
+    //     }
+    // };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,6 +36,8 @@ const AddProduct: React.FC = () => {
 
                 const data = await response.data;
                 console.log('data', data);
+                const maxId = data.reduce((max: any, item: any) => Math.max(max, item.id), 0);
+                setIdCount(maxId + 1);
             } catch (error) {
                 console.error('Veri alınamadı:', error);
             }
@@ -43,18 +46,31 @@ const AddProduct: React.FC = () => {
         fetchData();
     }, []);
 
+
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await api.delete(`/product/${109}`);
+
+    //             const data = await response.data;
+    //         } catch (error) {
+    //             console.error('Veri alınamadı:', error);
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, []);
+
+
     const handleSaveClick = async () => {
         try {
-            const response = await api.post('/register', {
-                id: 2,
+            const response = await api.post('/products', {
                 name: productName,
                 price: price,
+                // You have to look at how can i do float types
                 explanation: explanation,
-                base64Image: photo,
-                category: {
-                    id: 12,
-                    name: category,
-                }
+                categoryId: idCount,
             });
 
             if (response.status !== 200) {
@@ -85,12 +101,11 @@ const AddProduct: React.FC = () => {
                                 id='file-input'
                                 type='file'
                                 style={{ display: 'none' }}
-                                onChange={(e) => handleFileChange(e)}
+                            // onChange={(e) => handleFileChange(e)}
                             />
                             Add Photo
                         </label>
                     </div>
-
                     <div className='container-addProduct__table-box__price-category'>
                         <input
                             type='number'

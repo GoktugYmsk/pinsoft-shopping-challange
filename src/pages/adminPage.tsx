@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { useRouter } from 'next/router';
 
@@ -9,13 +9,47 @@ import Button from 'react-bootstrap/Button';
 import { store } from '@/app/store/store';
 import Header from '@/app/components/header';
 import './adminPage/index.scss'
+import api from '../../intercepter';
+
+
+interface Product {
+    id: number;
+    name: string;
+    explanation: string;
+    price: number;
+    category: { id: number; name: string };
+}
+
+
 
 const AdminPage: React.FC = () => {
     const router = useRouter();
+    const [productsData, setProductsData] = useState<Product[]>([]);
+
 
     const addProductClick = () => {
         router.push('/addProduct');
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await api.get('/products');
+
+                if (response.status !== 200) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.data;
+                console.log('data', data);
+                setProductsData(data)
+            } catch (error) {
+                console.error('Veri alınamadı:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <>
@@ -42,27 +76,15 @@ const AdminPage: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Ürün resmi eklenecek</td>
-                                <td>Madame çanta</td>
-                                <td>Bordo çanta</td>
-                                <td>150.60</td>
-                                <td>Giyim</td>
-                            </tr>
-                            <tr>
-                                <td>Ürün resmi eklenecek</td>
-                                <td>Nokia 3310</td>
-                                <td>Telefon</td>
-                                <td>25.0</td>
-                                <td>Elektronik</td>
-                            </tr>
-                            <tr>
-                                <td>Ürün resmi eklenecek</td>
-                                <td >Paranın Psikolojisi</td>
-                                <td>Kitap</td>
-                                <td>200.68</td>
-                                <td>Kitap</td>
-                            </tr>
+                            {productsData.map(item => (
+                                <tr key={item.id}>
+                                    <td>Resim eklenecek</td>
+                                    <td>{item.name}</td>
+                                    <td>{item.explanation}</td>
+                                    <td>{item.price}</td>
+                                    <td>{item.category.name}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </Table>
                 </div>

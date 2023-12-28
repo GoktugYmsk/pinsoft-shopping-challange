@@ -31,15 +31,21 @@ function Header() {
             setIsLoggedIn(value);
         });
     }, [islogin]);
-
-    const handleLogoutClick = () => {
+    const handleLogoutClick = async () => {
         localStorage.setItem('isLogin', String('false'));
         sessionStorage.removeItem('userTokenTry');
         console.log('Çıkış yapıldı');
-        router.push('/main');
-        console.log('Maine Yönlendiriliyor')
-        window.location.reload();
+
+        try {
+            await router.push('/main');
+            console.log('Maine Yönlendiriliyor');
+            setTimeout(() => window.location.reload(), 1000);
+        } catch (error) {
+            console.error('Yönlendirme hatası:', error);
+        }
     };
+
+
 
     return (
         <div className={`container-header ${isBasketActive ? 'opacityActive' : ''}`}>
