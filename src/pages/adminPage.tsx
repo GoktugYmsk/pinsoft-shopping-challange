@@ -35,6 +35,7 @@ const AdminPage: React.FC = () => {
     const [productsData, setProductsData] = useState<Product[]>([]);
     const [isDeletePopup, setIsDeletePopup] = useState(false);
     const [toastActive, setToastActive] = useState(false)
+    const [deletedProductId, setDeletedProductId] = useState<number>();
 
 
     const addProductClick = () => {
@@ -73,6 +74,12 @@ const AdminPage: React.FC = () => {
     //     }
     // };
 
+    const handleDeleteClick = (productId: number) => {
+        setIsDeletePopup(true);
+        // Seçilen ürünün id'sini DeleteProductPopup bileşenine iletiyoruz
+        setDeletedProductId(productId);
+    };
+
 
     const handleEditClick = () => {
         router.push('/updateProducts')
@@ -108,6 +115,7 @@ const AdminPage: React.FC = () => {
                                 <th>Explanation</th>
                                 <th>Price</th>
                                 <th>Category</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -118,23 +126,26 @@ const AdminPage: React.FC = () => {
                                     <td>{item.explanation}</td>
                                     <td>{item.price}</td>
                                     <td>{item.category.name}</td>
-                                    <RiDeleteBin5Line onClick={() => setIsDeletePopup(true)} className='delete-icons' />
-                                    <CiEdit onClick={handleEditClick} className='edit-icons' />
+                                    <td>
+                                        <RiDeleteBin5Line onClick={() => handleDeleteClick(item.id)} className='delete-icons' />
+                                        <CiEdit onClick={handleEditClick} className='edit-icons' />
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
+
                 </div>
             </div>
             {isDeletePopup &&
-                <DeleteProductPopup setIsDeletePopup={setIsDeletePopup} setToastActive={setToastActive} />
+                <DeleteProductPopup setIsDeletePopup={setIsDeletePopup} setToastActive={setToastActive} deletedProductId={deletedProductId} />
             }
             {
 
             }
             {toastActive && (
                 <div className="toast-container">
-                    <Toast onClose={() => setToastActive(false)} show={toastActive} delay={3000} autohide>
+                    <Toast onClose={() => setToastActive(false)} show={toastActive} autohide>
                         <Toast.Body>Data deleted succesfully!</Toast.Body>
                     </Toast>
                 </div>

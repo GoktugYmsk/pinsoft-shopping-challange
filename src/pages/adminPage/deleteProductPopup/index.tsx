@@ -7,12 +7,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 interface DeleteProductPopupProps {
     setIsDeletePopup: React.Dispatch<React.SetStateAction<boolean>>;
     setToastActive: React.Dispatch<React.SetStateAction<boolean>>;
+    deletedProductId: number | undefined;
 }
 
-function DeleteProductPopup({ setIsDeletePopup, setToastActive }: DeleteProductPopupProps) {
+
+function DeleteProductPopup({ setIsDeletePopup, setToastActive, deletedProductId }: DeleteProductPopupProps) {
+
+    console.log('deletedProductId', deletedProductId)
     const handleDeleteProduct = async () => {
         try {
-            await api.delete(`/product/${100}`);
+            await api.delete(`/product/${deletedProductId}`);
             console.log('Ürün başarıyla silindi.');
             setToastActive(true)
             setIsDeletePopup(false);
