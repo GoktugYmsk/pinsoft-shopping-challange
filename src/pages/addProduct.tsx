@@ -8,8 +8,10 @@ import api from '../../intercepter';
 import { store } from '@/app/store/store';
 import Header from '@/app/components/header';
 import '../pages/addProduct/index.scss';
+import { useRouter } from 'next/navigation';
 
 const AddProduct: React.FC = () => {
+    const router = useRouter();
     const [productName, setProductName] = useState('');
     // const [photo, setPhoto] = useState<File | string>('');
     const [price, setPrice] = useState(0);
@@ -72,10 +74,12 @@ const AddProduct: React.FC = () => {
                 explanation: explanation,
                 categoryId: idCount,
             });
+            router.push('/adminPage')
 
             if (response.status !== 200) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
+
         } catch (error) {
             console.error('Veri alınamadı:', error);
         }

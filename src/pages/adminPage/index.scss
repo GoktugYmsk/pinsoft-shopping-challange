@@ -1,3 +1,8 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
 .container-adminPage {
     display: flex;
     flex-direction: column;
@@ -10,6 +15,7 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        border-radius: 4px;
         background: #FFFFFF;
         height: 600px;
 
@@ -96,4 +102,14 @@
             }
         }
     }
+}
+
+.delete-icons {
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.edit-icons {
+    font-size: 40px;
+    cursor: pointer;
 }

@@ -1,15 +1,22 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 
+import { CiEdit } from "react-icons/ci";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import { RiDeleteBin5Line } from "react-icons/ri";
+import Toast from 'react-bootstrap/Toast';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
+import api from '../../intercepter';
 import { store } from '@/app/store/store';
 import Header from '@/app/components/header';
+import DeleteProductPopup from './adminPage/deleteProductPopup';
+
+
 import './adminPage/index.scss'
-import api from '../../intercepter';
 // import * as XLSX from 'xlsx';
 
 
@@ -26,6 +33,8 @@ interface Product {
 const AdminPage: React.FC = () => {
     const router = useRouter();
     const [productsData, setProductsData] = useState<Product[]>([]);
+    const [isDeletePopup, setIsDeletePopup] = useState(false);
+    const [toastActive, setToastActive] = useState(false)
 
 
     const addProductClick = () => {
@@ -63,6 +72,13 @@ const AdminPage: React.FC = () => {
     //         console.error('Excel dosyasına dönüştürme hatası:', error);
     //     }
     // };
+
+
+    const handleEditClick = () => {
+        router.push('/updateProducts')
+    }
+
+
 
     return (
         <>
@@ -102,12 +118,27 @@ const AdminPage: React.FC = () => {
                                     <td>{item.explanation}</td>
                                     <td>{item.price}</td>
                                     <td>{item.category.name}</td>
+                                    <RiDeleteBin5Line onClick={() => setIsDeletePopup(true)} className='delete-icons' />
+                                    <CiEdit onClick={handleEditClick} className='edit-icons' />
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
                 </div>
             </div>
+            {isDeletePopup &&
+                <DeleteProductPopup setIsDeletePopup={setIsDeletePopup} setToastActive={setToastActive} />
+            }
+            {
+
+            }
+            {toastActive && (
+                <div className="toast-container">
+                    <Toast onClose={() => setToastActive(false)} show={toastActive} delay={3000} autohide>
+                        <Toast.Body>Data deleted succesfully!</Toast.Body>
+                    </Toast>
+                </div>
+            )}
         </>
     );
 };

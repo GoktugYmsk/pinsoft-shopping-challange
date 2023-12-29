@@ -12,6 +12,7 @@ const rootReducer = combineReducers({
     isBasketActive: configure,
     allBasket: configure,
     isloginn: configure,
+    openPopup: configure,
 });
 
 const store = configureStore({
