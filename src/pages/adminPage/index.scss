@@ -23,6 +23,7 @@ body {
         .container-adminPage__tableBox__box {
             height: 600px;
             width: 100%;
+            overflow: scroll;
 
             .td,
             th,
@@ -45,6 +46,14 @@ body {
             tr:nth-child(even) {
                 background-color: #f9f9f9;
             }
+
+            .table-down {
+                display: flex;
+                // background: red;
+                align-items: center;
+                justify-content: space-around;
+            }
+
         }
 
         .container-adminPage__tableBox__top {
@@ -107,11 +116,19 @@ body {
 .delete-icons {
     font-size: 40px;
     cursor: pointer;
+
+    &:hover {
+        font-size: 42px;
+    }
 }
 
 .edit-icons {
     font-size: 40px;
     cursor: pointer;
+
+    &:hover {
+        font-size: 42px;
+    }
 }
 
 .toast-container {

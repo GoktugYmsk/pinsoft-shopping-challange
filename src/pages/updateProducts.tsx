@@ -8,10 +8,12 @@ import api from '../../intercepter';
 import { store } from '@/app/store/store';
 import Header from '@/app/components/header';
 import '../pages/updateProducts/index.scss';
+import { useRouter } from 'next/navigation';
 
 const AddProduct: React.FC = () => {
     const [productName, setProductName] = useState('');
     // const [photo, setPhoto] = useState<File | string>('');
+    const router = useRouter();
     const [price, setPrice] = useState(0);
     const [category, setCategory] = useState('');
     const [explanation, setExplanation] = useState('');
@@ -25,6 +27,19 @@ const AddProduct: React.FC = () => {
     //     }
     // };
 
+    const mapCategoryToId = (selectedCategory: string): number => {
+        switch (selectedCategory) {
+            case 'Kitap':
+                return 1;
+            case 'Eletronik':
+                return 2;
+            case 'Giyim':
+                return 3;
+            default:
+                return 0;
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -33,7 +48,6 @@ const AddProduct: React.FC = () => {
                 if (response.status !== 200) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-
                 const data = await response.data;
                 console.log('data', data);
                 const maxId = data.reduce((max: any, item: any) => Math.max(max, item.id), 0);
@@ -63,21 +77,46 @@ const AddProduct: React.FC = () => {
     // }, []);
 
 
+    // const handleSaveClick = async () => {
+    //     try {
+    //         const response = await api.put('/products', {
+    //             name: productName,
+    //             price: price,
+    //             // You have to look at how can i do float types
+    //             explanation: explanation,
+    //             categoryId: idCount,
+    //         });
+
+    //         if (response.status !== 200) {
+    //             throw new Error(`HTTP error! Status: ${response.status}`);
+    //         }
+    //     } catch (error) {
+    //         console.error('Veri alınamadı:', error);
+    //     }
+    // };
+
+    const productId = sessionStorage.getItem('productID')
+    console.log('productId', productId)
+
     const handleSaveClick = async () => {
         try {
+            const categoryId = mapCategoryToId(category);
+
             const response = await api.put('/products', {
+                id: productId,
                 name: productName,
                 price: price,
-                // You have to look at how can i do float types
                 explanation: explanation,
-                categoryId: idCount,
+                categoryId: categoryId,
             });
+
+            router.push('/adminPage');
 
             if (response.status !== 200) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
         } catch (error) {
-            console.error('Veri alınamadı:', error);
+            console.error('Veri gönderilemedi:', error);
         }
     };
 

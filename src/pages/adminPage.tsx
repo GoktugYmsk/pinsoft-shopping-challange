@@ -81,11 +81,10 @@ const AdminPage: React.FC = () => {
     };
 
 
-    const handleEditClick = () => {
-        router.push('/updateProducts')
-    }
-
-
+    const handleEditClick = (productId: number) => {
+        sessionStorage.setItem('productID', String(productId));
+        router.push('/updateProducts');
+    };
 
 
 
@@ -127,16 +126,15 @@ const AdminPage: React.FC = () => {
                                     <td>{item.name}</td>
                                     <td>{item.explanation}</td>
                                     <td>{item.price}</td>
-                                    <td>{item.category.name}</td>
-                                    <td>
+                                    {/* <td>{item.category.name}</td> */}
+                                    <td className='table-down' >
                                         <RiDeleteBin5Line onClick={() => handleDeleteClick(item.id)} className='delete-icons' />
-                                        <CiEdit onClick={handleEditClick} className='edit-icons' />
+                                        <CiEdit onClick={() => handleEditClick(item.id)} className='edit-icons' />
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
-
                 </div>
             </div>
             {isDeletePopup &&
