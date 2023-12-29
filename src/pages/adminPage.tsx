@@ -10,6 +10,7 @@ import { store } from '@/app/store/store';
 import Header from '@/app/components/header';
 import './adminPage/index.scss'
 import api from '../../intercepter';
+// import * as XLSX from 'xlsx';
 
 
 interface Product {
@@ -51,6 +52,18 @@ const AdminPage: React.FC = () => {
         fetchData();
     }, []);
 
+
+    // const exportToExcel = () => {
+    //     try {
+    //         const ws = XLSX.utils.json_to_sheet(productsData);
+    //         const wb = XLSX.utils.book_new();
+    //         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    //         XLSX.writeFile(wb, 'products.xlsx');
+    //     } catch (error) {
+    //         console.error('Excel dosyasına dönüştürme hatası:', error);
+    //     }
+    // };
+
     return (
         <>
             <Provider store={store}>
@@ -62,7 +75,13 @@ const AdminPage: React.FC = () => {
                         <h2>Products</h2>
                         <div className='container-adminPage__tableBox__top__buttons'>
                             <Button onClick={addProductClick} className='container-adminPage__tableBox__top__buttons__left' variant="link">New Product</Button>
-                            <Button className='container-adminPage__tableBox__top__buttons__right' variant="link">Export To Excel</Button>
+                            <Button
+                                className='container-adminPage__tableBox__top__buttons__right'
+                                variant="link"
+                            // onClick={exportToExcel}
+                            >
+                                Export To Excel
+                            </Button>
                         </div>
                     </div>
                     <Table className='container-adminPage__tableBox__box' striped bordered hover>
