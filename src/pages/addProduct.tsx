@@ -1,9 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
-
 import Button from 'react-bootstrap/Button';
-
 import api from '../../intercepter';
 import { store } from '@/app/store/store';
 import Header from '@/app/components/header';
@@ -13,19 +11,43 @@ import { useRouter } from 'next/navigation';
 const AddProduct: React.FC = () => {
     const router = useRouter();
     const [productName, setProductName] = useState('');
-    // const [photo, setPhoto] = useState<File | string>('');
     const [price, setPrice] = useState(0);
     const [category, setCategory] = useState('');
     const [explanation, setExplanation] = useState('');
-    const [idCount, setIdCount] = useState();
 
-    // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const file = e.target.files?.[0];
+    const mapCategoryToId = (selectedCategory: string): number => {
+        switch (selectedCategory) {
+            case 'Kitap':
+                return 1;
+            case 'Eletronik':
+                return 2;
+            case 'Giyim':
+                return 3;
+            default:
+                return 0;
+        }
+    };
 
-    //     if (file) {
-    //         setPhoto(file);
-    //     }
-    // };
+    const handleSaveClick = async () => {
+        try {
+            const categoryId = mapCategoryToId(category);
+
+            const response = await api.post('/products', {
+                name: productName,
+                price: price,
+                explanation: explanation,
+                categoryId: categoryId,
+            });
+
+            router.push('/adminPage');
+
+            if (response.status !== 200) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Veri gönderilemedi:', error);
+        }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,52 +60,18 @@ const AddProduct: React.FC = () => {
 
                 const data = await response.data;
                 console.log('data', data);
-                const maxId = data.reduce((max: any, item: any) => Math.max(max, item.id), 0);
-                setIdCount(maxId + 1);
             } catch (error) {
-                console.error('Veri alınamadı:', error);
+                console.error('Veri alınamadı: get isteği olan products', error);
+                console.log('get isteği olan products');
             }
         };
 
         fetchData();
     }, []);
 
-
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await api.delete(`/product/${109}`);
-
-    //             const data = await response.data;
-    //         } catch (error) {
-    //             console.error('Veri alınamadı:', error);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []);
-
-
-    const handleSaveClick = async () => {
-        try {
-            const response = await api.post('/products', {
-                name: productName,
-                price: price,
-                // You have to look at how can i do float types
-                explanation: explanation,
-                categoryId: idCount,
-            });
-            router.push('/adminPage')
-
-            if (response.status !== 200) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-        } catch (error) {
-            console.error('Veri alınamadı:', error);
-        }
-    };
+    useEffect(() => {
+        console.log('category', category);
+    }, [category]);
 
     return (
         <>
@@ -105,7 +93,6 @@ const AddProduct: React.FC = () => {
                                 id='file-input'
                                 type='file'
                                 style={{ display: 'none' }}
-                            // onChange={(e) => handleFileChange(e)}
                             />
                             Add Photo
                         </label>

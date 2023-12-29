@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import api from '../../../../intercepter';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useRouter } from 'next/navigation';
 
 interface DeleteProductPopupProps {
     setIsDeletePopup: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,7 +13,7 @@ interface DeleteProductPopupProps {
 
 
 function DeleteProductPopup({ setIsDeletePopup, setToastActive, deletedProductId }: DeleteProductPopupProps) {
-
+    const router = useRouter();
     console.log('deletedProductId', deletedProductId)
     const handleDeleteProduct = async () => {
         try {
@@ -20,6 +21,7 @@ function DeleteProductPopup({ setIsDeletePopup, setToastActive, deletedProductId
             console.log('Ürün başarıyla silindi.');
             setToastActive(true)
             setIsDeletePopup(false);
+            window.location.reload();
         } catch (error) {
             console.log('Ürün silinemedi:', error);
         }
