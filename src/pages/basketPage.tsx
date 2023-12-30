@@ -1,16 +1,13 @@
 'use client'
-import React, { useEffect, useState } from 'react';
-import { Provider, useDispatch } from 'react-redux';
-import { useRouter } from 'next/router';
+import React from 'react';
+import { Provider } from 'react-redux';
 
-import { CiEdit } from "react-icons/ci";
+
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import { RiDeleteBin5Line } from "react-icons/ri";
-import Toast from 'react-bootstrap/Toast';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import api from '../../intercepter';
 import { store } from '@/app/store/store';
 import Header from '@/app/components/header';
 
