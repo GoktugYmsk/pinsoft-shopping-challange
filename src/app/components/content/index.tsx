@@ -44,7 +44,7 @@ function Content() {
 
     const router = useRouter();
 
-    const isBasketActive = useSelector((state: RootState) => state.isBasketActive.basket);
+    // const isBasketActive = useSelector((state: RootState) => state.isBasketActive.basket);
 
     useEffect
 
@@ -81,8 +81,6 @@ function Content() {
         });
     }, []);
 
-
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -116,7 +114,8 @@ function Content() {
 
     return (
         <>
-            <div className={`container-content ${isBasketActive ? 'opacityActive' : ''}`}>
+            {/* <div className={`container-content ${isBasketActive ? 'opacityActive' : ''}`}> */}
+            <div className='container-content'>
                 <div className='container-content__box'>
                     <LeftContent
                         setFiltre={setFiltre}
@@ -135,14 +134,16 @@ function Content() {
                     <Button className='container-content__order-button' onClick={hanleOrderClick} variant="light">Siparişlerim</Button>
                 }
             </div>
-            {isBasketActive && <Basket />}
-            {toastActive && (
-                <div className="toast-container">
-                    <Toast onClose={() => setToastActive(false)} show={toastActive} autohide>
-                        <Toast.Body>{toastMessage}</Toast.Body>
-                    </Toast>
-                </div>
-            )}
+            {/* {isBasketActive && <Basket />} */}
+            {
+                toastActive && (
+                    <div className="toast-container">
+                        <Toast onClose={() => setToastActive(false)} show={toastActive} autohide>
+                            <Toast.Body>{toastMessage}</Toast.Body>
+                        </Toast>
+                    </div>
+                )
+            }
         </>
     );
 }

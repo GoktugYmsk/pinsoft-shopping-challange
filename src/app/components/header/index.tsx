@@ -12,13 +12,20 @@ import './index.scss';
 import api from '../../../../intercepter';
 import Head from 'next/head';
 
+interface Role {
+    username: string;
+    role: {
+        name: string;
+    };
+}
+
+
 function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean | undefined>(undefined);
     const [isUser, setIsUser] = useState(false)
 
     let islogin: string | null = null;
 
-    const dispatch = useDispatch();
     const router = useRouter();
 
     const isBasketActive = useSelector((state: { isBasketActive: { basket: boolean } }) => state.isBasketActive.basket);
@@ -62,33 +69,40 @@ function Header() {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                const role = await response.data;
-                console.log('Role', role)
+                const roles: Role[] = await response.data;
 
-                const isUserName = role.map((item: { role: { name: string } }) => {
-                    return item.role.name;
-                });
+                // Eğer roles boş değilse ve kullanıcı girişi yapılmışsa devam et
+                if (roles && isLoggedIn) {
+                    // Kullanıcının rolünü al
+                    const userRole = roles.find((role) => role.username === username);
 
+                    // Eğer kullanıcının rolü bulunduysa, rolü console'a yazdır
+                    if (userRole) {
+                        console.log('Kullanıcı Rolü:', userRole.role.name);
 
-
-                if (isUserName === 'user') {
-                    setIsUser(true)
-                    console.log('kod çalışıyor mu')
-                    console.log(isUserName);
+                        // Eğer kullanıcı rolü 'user' ise setIsUser'u true yap
+                        if (userRole.role.name === 'user') {
+                            setIsUser(true);
+                        }
+                    } else {
+                        console.log('Kullanıcının rolü bulunamadı.');
+                    }
                 }
-                else {
-                    console.log('isUserName', isUserName)
-                }
-
-
             } catch (error) {
                 console.error('Veri alınamadı:', error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [isLoggedIn, username]);
 
+
+
+
+
+    const handleBasketClick = () => {
+        router.push('/basketPage')
+    }
 
 
     return (
@@ -106,7 +120,7 @@ function Header() {
                                 <p>{username}</p>
                             }
                             {isUser &&
-                                <SlBasket onClick={() => dispatch(setBasket(true))} className="container-header__navbar__icons__rigth" />
+                                <SlBasket onClick={handleBasketClick} className="container-header__navbar__icons__rigth" />
                             }
                             {isLoggedIn && (
                                 <FiLogOut className="container-header_navbar__icons_logout" onClick={handleLogoutClick} />
