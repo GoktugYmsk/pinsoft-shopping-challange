@@ -10,7 +10,11 @@ import './page.module.css'
 
 const Home: React.FC = () => {
 
-  // sepet iconu için giriş yapan kişi bilgileri `role` kontrolü yapılacak  ***************************
+  // RightContentte skeleton çalışmıyor ona bakarsın
+  // Sepet ve sipariş sayafaları yapılacak
+  // https://pinsoft.onrender.com/swagger-ui/index.html#/user-controller/authenticate
+  // https://pinsoft.onrender.com/swagger-ui/index.html#
+  // https://www.figma.com/file/TIKuY2wyU68l1cLLH9E3Lj/Untitled?type=design&node-id=428-3903&mode=design&t=jhevkI9in8suViEr-0
 
   return (
     <main className={styles.main}>

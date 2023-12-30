@@ -110,6 +110,7 @@ const AddProduct: React.FC = () => {
                 categoryId: categoryId,
             });
 
+            sessionStorage.setItem('productUpdate', 'true');
             router.push('/adminPage');
 
             if (response.status !== 200) {
@@ -170,6 +171,7 @@ const AddProduct: React.FC = () => {
                     <Button onClick={handleSaveClick}>SAVE</Button>
                 </div>
             </div>
+
         </>
     );
 };

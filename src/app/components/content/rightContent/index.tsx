@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import Skeleton from 'react-loading-skeleton';
 import Button from 'react-bootstrap/Button';
 
 import ProductPopup from './productPopup';
@@ -27,7 +27,12 @@ interface RightContentProps {
     setToastMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function RightContent({ products, urunleriFiltrele, setToastActive, setToastMessage }: RightContentProps) {
+function RightContent({
+    products,
+    urunleriFiltrele,
+    setToastActive,
+    setToastMessage
+}: RightContentProps) {
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [productInBasket, setProductInBasket] = useState<{ [key: number]: boolean }>({});
 
@@ -67,13 +72,17 @@ function RightContent({ products, urunleriFiltrele, setToastActive, setToastMess
             <div className='container-content__box-right__products'>
                 {products.filter(urunleriFiltrele).map((product, index) => (
                     <div className='container-content__box-right__products__top' key={index}>
-                        <p onClick={() => handleProductClick(product)}>{product.name}</p>
-                        <p>{product.price} TL</p>
-                        <p>{product.explanation} </p>
+                        <p onClick={() => handleProductClick(product)}>
+                            {product.name || <Skeleton />}
+                        </p>
+                        <p>{product.price || <Skeleton />} TL</p>
+                        <p>{product.explanation || <Skeleton />} </p>
                         <Button
                             variant='info'
                             onClick={() => {
-                                const isProductInBasket = basketProducts.some((basketProduct) => basketProduct.id === product.id);
+                                const isProductInBasket = basketProducts.some(
+                                    (basketProduct) => basketProduct.id === product.id
+                                );
 
                                 if (isProductInBasket) {
                                     handleRemoveFromCart(product.id);

@@ -8,17 +8,19 @@ import { useRouter } from 'next/navigation';
 interface DeleteProductPopupProps {
     setIsDeletePopup: React.Dispatch<React.SetStateAction<boolean>>;
     setToastActive: React.Dispatch<React.SetStateAction<boolean>>;
+    setToastMessage: React.Dispatch<React.SetStateAction<string>>;
     deletedProductId: number | undefined;
 }
 
 
-function DeleteProductPopup({ setIsDeletePopup, setToastActive, deletedProductId }: DeleteProductPopupProps) {
+function DeleteProductPopup({ setIsDeletePopup, setToastActive, deletedProductId, setToastMessage }: DeleteProductPopupProps) {
     const router = useRouter();
     console.log('deletedProductId', deletedProductId)
     const handleDeleteProduct = async () => {
         try {
             await api.delete(`/product/${deletedProductId}`);
             console.log('Ürün başarıyla silindi.');
+            setToastMessage('Data deleted succesfully!')
             setToastActive(true)
             setIsDeletePopup(false);
             window.location.reload();

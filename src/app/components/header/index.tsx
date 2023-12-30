@@ -39,6 +39,7 @@ function Header() {
     }, [islogin]);
     const handleLogoutClick = async () => {
         localStorage.setItem('isLogin', String('false'));
+        sessionStorage.removeItem('productUpdate');
         sessionStorage.removeItem('userTokenTry');
         sessionStorage.removeItem('productID');
         console.log('Çıkış yapıldı');

@@ -32,13 +32,31 @@ interface Product {
 
 const AdminPage: React.FC = () => {
     const router = useRouter();
-    const [productsData, setProductsData] = useState<Product[]>([]);
-    const [isDeletePopup, setIsDeletePopup] = useState(false);
     const [toastActive, setToastActive] = useState(false)
+    const [isDeletePopup, setIsDeletePopup] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const [productsData, setProductsData] = useState<Product[]>([]);
     const [deletedProductId, setDeletedProductId] = useState<number>();
 
 
+    const updateProduct = typeof window !== 'undefined' ? sessionStorage.getItem('productUpdate') : null;
+    console.log('updateProduct', updateProduct);
+
+    useEffect(() => {
+
+        const updateToast = async () => {
+            if (typeof window !== 'undefined') {
+                if (updateProduct === 'true') {
+                    setToastMessage('Data update succesfully!')
+                    setToastActive(true);
+                };
+            };
+        };
+        updateToast();
+    }, [updateProduct])
+
     const addProductClick = () => {
+        sessionStorage.getItem('productUpdate');
         router.push('/addProduct');
     }
 
@@ -75,6 +93,7 @@ const AdminPage: React.FC = () => {
     // };
 
     const handleDeleteClick = (productId: number) => {
+        sessionStorage.removeItem('productUpdate');
         setIsDeletePopup(true);
         // Seçilen ürünün id'sini DeleteProductPopup bileşenine iletiyoruz
         setDeletedProductId(productId);
@@ -82,6 +101,7 @@ const AdminPage: React.FC = () => {
 
 
     const handleEditClick = (productId: number) => {
+        sessionStorage.removeItem('productUpdate');
         sessionStorage.setItem('productID', String(productId));
         router.push('/updateProducts');
     };
@@ -126,7 +146,7 @@ const AdminPage: React.FC = () => {
                                     <td>{item.name}</td>
                                     <td>{item.explanation}</td>
                                     <td>{item.price}</td>
-                                    <td>{item.category.name}</td>
+                                    {/* <td>{item.category.name}</td> */}
                                     <td className='table-down' >
                                         <RiDeleteBin5Line onClick={() => handleDeleteClick(item.id)} className='delete-icons' />
                                         <CiEdit onClick={() => handleEditClick(item.id)} className='edit-icons' />
@@ -138,7 +158,7 @@ const AdminPage: React.FC = () => {
                 </div>
             </div>
             {isDeletePopup &&
-                <DeleteProductPopup setIsDeletePopup={setIsDeletePopup} setToastActive={setToastActive} deletedProductId={deletedProductId} />
+                <DeleteProductPopup setIsDeletePopup={setIsDeletePopup} setToastActive={setToastActive} deletedProductId={deletedProductId} setToastMessage={setToastMessage} />
             }
             {
 
@@ -146,7 +166,7 @@ const AdminPage: React.FC = () => {
             {toastActive && (
                 <div className="toast-container">
                     <Toast onClose={() => setToastActive(false)} show={toastActive} autohide>
-                        <Toast.Body>Data deleted succesfully!</Toast.Body>
+                        <Toast.Body>{toastMessage}</Toast.Body>
                     </Toast>
                 </div>
             )}
