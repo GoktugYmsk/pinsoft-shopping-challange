@@ -126,7 +126,7 @@ const AdminPage: React.FC = () => {
                                     <td>{item.name}</td>
                                     <td>{item.explanation}</td>
                                     <td>{item.price}</td>
-                                    {/* <td>{item.category.name}</td> */}
+                                    <td>{item.category.name}</td>
                                     <td className='table-down' >
                                         <RiDeleteBin5Line onClick={() => handleDeleteClick(item.id)} className='delete-icons' />
                                         <CiEdit onClick={() => handleEditClick(item.id)} className='edit-icons' />

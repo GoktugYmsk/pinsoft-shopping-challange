@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import axios from 'axios';
 import { GoLock } from 'react-icons/go';
 import { FaRegUser } from 'react-icons/fa';
+import { MdOutlineMailOutline } from "react-icons/md";
 
 import { store } from '@/app/store/store';
 import Header from '@/app/components/header';
@@ -54,6 +55,7 @@ const Signup: React.FC<SignupProps> = () => {
                     </label>
                 </div>
                 <div className='container-signin__box__down-input' >
+                    <MdOutlineMailOutline className='container-signin__box__email-icon' />
                     <label>
                         <input type="text" placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)} />
                     </label>

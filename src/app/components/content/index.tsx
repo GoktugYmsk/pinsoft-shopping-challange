@@ -106,6 +106,10 @@ function Content() {
         router.push('/login');
     }
 
+    const hanleOrderClick = () => {
+
+    }
+
     return (
         <>
             <div className={`container-content ${isBasketActive ? 'opacityActive' : ''}`}>
@@ -122,6 +126,9 @@ function Content() {
                 </div>
                 {!isLoggedIn &&
                     <Button className='container-content__signin-button' onClick={handleSigninClick} variant="light">Sign in</Button>
+                }
+                {isLoggedIn &&
+                    <Button className='container-content__order-button' onClick={hanleOrderClick} variant="light">Siparişlerim</Button>
                 }
             </div>
             {isBasketActive && <Basket />}

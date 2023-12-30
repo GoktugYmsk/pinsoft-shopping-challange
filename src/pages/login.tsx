@@ -43,6 +43,8 @@ const Login: React.FC = () => {
                 password: password,
             });
 
+            sessionStorage.setItem('username', username);
+
             const token = authResponse.data.token;
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             sessionStorage.setItem('userTokenTry', token);

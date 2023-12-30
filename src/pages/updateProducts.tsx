@@ -95,8 +95,8 @@ const AddProduct: React.FC = () => {
     //     }
     // };
 
-    const productId = sessionStorage.getItem('productID')
-    console.log('productId', productId)
+    const productId = typeof window !== 'undefined' ? sessionStorage.getItem('productID') : null;
+    console.log('productId', productId);
 
     const handleSaveClick = async () => {
         try {
