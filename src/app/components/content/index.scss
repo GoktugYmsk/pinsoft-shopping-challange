@@ -143,3 +143,10 @@
     opacity: 0.2;
     transition: opacity 1s ease;
 }
+
+.toast-container {
+    position: absolute;
+    top: 120px;
+    right: 20px;
+    background: #a2e47c;
+}

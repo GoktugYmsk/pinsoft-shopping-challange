@@ -23,9 +23,11 @@ interface RootState {
 interface RightContentProps {
     products: Product[];
     urunleriFiltrele: (urun: Product) => boolean;
+    setToastActive: React.Dispatch<React.SetStateAction<boolean>>;
+    setToastMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function RightContent({ products, urunleriFiltrele }: RightContentProps) {
+function RightContent({ products, urunleriFiltrele, setToastActive, setToastMessage }: RightContentProps) {
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [productInBasket, setProductInBasket] = useState<{ [key: number]: boolean }>({});
 
@@ -41,15 +43,19 @@ function RightContent({ products, urunleriFiltrele }: RightContentProps) {
         setProductInBasket(newProductInBasket);
     }, [basketProducts]);
 
-    const handleSepeteEkle = (product: Product) => {
+    const handleAddBasket = (product: Product) => {
         dispatch(setBasketProducts([...basketProducts, product]));
         setProductInBasket((prev) => ({ ...prev, [product.id]: true }));
+        setToastActive(true);
+        setToastMessage('Product Added From The Basket !');
     };
 
     const handleRemoveFromCart = (productId: number) => {
         const updatedBasket = basketProducts.filter((product) => product.id !== productId);
         dispatch(setBasketProducts(updatedBasket));
         setProductInBasket((prev) => ({ ...prev, [productId]: false }));
+        setToastActive(true);
+        setToastMessage('Product Remove From The Basket !');
     };
 
     const handleProductClick = (product: Product) => {
@@ -72,7 +78,7 @@ function RightContent({ products, urunleriFiltrele }: RightContentProps) {
                                 if (isProductInBasket) {
                                     handleRemoveFromCart(product.id);
                                 } else {
-                                    handleSepeteEkle(product);
+                                    handleAddBasket(product);
                                 }
                             }}
                         >

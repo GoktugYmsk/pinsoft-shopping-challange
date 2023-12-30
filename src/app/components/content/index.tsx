@@ -3,12 +3,14 @@ import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 
 import axios from 'axios';
+import Toast from 'react-bootstrap/Toast';
 import Button from 'react-bootstrap/Button';
 
 import Basket from '../header/basket';
 import LeftContent from './leftContent';
 import RightContent from './rightContent';
 import './index.scss';
+import api from '../../../../intercepter';
 
 interface RootState {
     isBasketActive: {
@@ -32,6 +34,8 @@ function Content() {
     const [filtre, setFiltre] = useState<string>('');
     const [categories, setCategories] = useState<Category[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
+    const [toastActive, setToastActive] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
     const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
     const [fiyatAraligi, setFiyatAraligi] = useState<[number, number]>([0, 1000]);
 
@@ -82,8 +86,8 @@ function Content() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const productsResponse = await axios.get(process.env.NEXT_PUBLIC_API_URL + 'products');
-                const categoriesResponse = await axios.get(process.env.NEXT_PUBLIC_API_URL + 'category');
+                const productsResponse = await api.get(process.env.NEXT_PUBLIC_API_URL + 'products');
+                const categoriesResponse = await api.get(process.env.NEXT_PUBLIC_API_URL + 'category');
 
                 const productsData = productsResponse.data;
                 const categoriesData = categoriesResponse.data;
@@ -122,7 +126,7 @@ function Content() {
                         selectedCategories={selectedCategories}
                         setSelectedCategories={setSelectedCategories}
                     />
-                    <RightContent products={allProducts} urunleriFiltrele={urunleriFiltrele} />
+                    <RightContent products={allProducts} urunleriFiltrele={urunleriFiltrele} setToastActive={setToastActive} setToastMessage={setToastMessage} />
                 </div>
                 {!isLoggedIn &&
                     <Button className='container-content__signin-button' onClick={handleSigninClick} variant="light">Sign in</Button>
@@ -132,6 +136,13 @@ function Content() {
                 }
             </div>
             {isBasketActive && <Basket />}
+            {toastActive && (
+                <div className="toast-container">
+                    <Toast onClose={() => setToastActive(false)} show={toastActive} autohide>
+                        <Toast.Body>{toastMessage}</Toast.Body>
+                    </Toast>
+                </div>
+            )}
         </>
     );
 }
