@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import Skeleton from 'react-loading-skeleton';
 import Button from 'react-bootstrap/Button';
 
 import ProductPopup from './productPopup';
-import { setBasketProducts } from '../../configure';
 
 interface Product {
     id: number;
@@ -12,12 +10,6 @@ interface Product {
     price: number;
     category: string;
     explanation: string;
-}
-
-interface RootState {
-    allBasket: {
-        basketProducts: Product[];
-    };
 }
 
 interface RightContentProps {
@@ -36,31 +28,34 @@ function RightContent({
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [productInBasket, setProductInBasket] = useState<{ [key: number]: boolean }>({});
 
-    const dispatch = useDispatch();
-
-    const basketProducts = useSelector((state: RootState) => state.allBasket.basketProducts);
-
     useEffect(() => {
+        const sessionStorageBasket = sessionStorage.getItem('basketProducts');
+        const initialBasket = sessionStorageBasket ? JSON.parse(sessionStorageBasket) : [];
         const newProductInBasket: { [key: number]: boolean } = {};
-        basketProducts.forEach((product) => {
+        initialBasket.forEach((product: Product) => {
             newProductInBasket[product.id] = true;
         });
         setProductInBasket(newProductInBasket);
-    }, [basketProducts]);
+    }, []);
 
     const handleAddBasket = (product: Product) => {
-        dispatch(setBasketProducts([...basketProducts, product]));
+        const sessionStorageBasket = sessionStorage.getItem('basketProducts');
+        const updatedBasket = sessionStorageBasket ? JSON.parse(sessionStorageBasket) : [];
+        updatedBasket.push({ ...product, quantity: 1 });
+        sessionStorage.setItem('basketProducts', JSON.stringify(updatedBasket));
         setProductInBasket((prev) => ({ ...prev, [product.id]: true }));
         setToastActive(true);
-        setToastMessage('Product Added From The Basket !');
+        setToastMessage('Ürün sepete eklendi!');
     };
 
     const handleRemoveFromCart = (productId: number) => {
-        const updatedBasket = basketProducts.filter((product) => product.id !== productId);
-        dispatch(setBasketProducts(updatedBasket));
+        const sessionStorageBasket = sessionStorage.getItem('basketProducts');
+        const updatedBasket = sessionStorageBasket ? JSON.parse(sessionStorageBasket) : [];
+        const filteredBasket = updatedBasket.filter((product: Product) => product.id !== productId);
+        sessionStorage.setItem('basketProducts', JSON.stringify(filteredBasket));
         setProductInBasket((prev) => ({ ...prev, [productId]: false }));
         setToastActive(true);
-        setToastMessage('Product Remove From The Basket !');
+        setToastMessage('Ürün sepetten çıkarıldı!');
     };
 
     const handleProductClick = (product: Product) => {
@@ -80,9 +75,7 @@ function RightContent({
                         <Button
                             variant='info'
                             onClick={() => {
-                                const isProductInBasket = basketProducts.some(
-                                    (basketProduct) => basketProduct.id === product.id
-                                );
+                                const isProductInBasket = productInBasket[product.id];
 
                                 if (isProductInBasket) {
                                     handleRemoveFromCart(product.id);

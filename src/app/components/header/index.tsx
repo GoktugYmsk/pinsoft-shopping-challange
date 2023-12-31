@@ -70,17 +70,10 @@ function Header() {
                 }
 
                 const roles: Role[] = await response.data;
-
-                // Eğer roles boş değilse ve kullanıcı girişi yapılmışsa devam et
                 if (roles && isLoggedIn) {
-                    // Kullanıcının rolünü al
                     const userRole = roles.find((role) => role.username === username);
-
-                    // Eğer kullanıcının rolü bulunduysa, rolü console'a yazdır
                     if (userRole) {
                         console.log('Kullanıcı Rolü:', userRole.role.name);
-
-                        // Eğer kullanıcı rolü 'user' ise setIsUser'u true yap
                         if (userRole.role.name === 'user') {
                             setIsUser(true);
                         }
