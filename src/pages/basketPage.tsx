@@ -12,6 +12,7 @@ import Header from '@/app/components/header';
 
 import './basketPage/index.scss';
 import { useRouter } from 'next/navigation';
+import api from '../../intercepter';
 
 interface Product {
     id: number;
@@ -26,6 +27,9 @@ const BasketPage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
 
     const router = useRouter();
+
+    const userIDString = sessionStorage.getItem('userId');
+    const userID = userIDString ? parseFloat(userIDString) : 0;
 
     useEffect(() => {
         const addedBasketProducts = sessionStorage.getItem('basketProducts');
@@ -53,6 +57,32 @@ const BasketPage: React.FC = () => {
         setProducts(updatedProducts);
         sessionStorage.setItem('basketProducts', JSON.stringify(updatedProducts));
     };
+
+    const handleCompleteOrder = async () => {
+        try {
+
+            const orderPayload = products.map((product) => ({
+                name: product.name,
+                price: product.price,
+                quantity: product.quantity,
+                userId: userID,
+            }));
+            console.log('orderPayload', orderPayload)
+            const response = await api.post('/orders', orderPayload);
+
+            if (response.status !== 200) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            setProducts([]);
+            sessionStorage.removeItem('basketProducts');
+
+        } catch (error) {
+            console.error('Veri alınamadı:', error);
+        }
+    }
+
+    // order isteğine bakılacak
+
 
     return (
         <>
@@ -114,7 +144,7 @@ const BasketPage: React.FC = () => {
                                     <Button onClick={handleOnKeepShopping} className='basket-keepShopping-button'>
                                         Alışverişe Devam Et
                                     </Button>
-                                    <Button className='basket-order-button'>Siparişi Tamamla</Button>
+                                    <Button onClick={handleCompleteOrder} className='basket-order-button'>Siparişi Tamamla</Button>
                                 </>
                             )}
                         </div>

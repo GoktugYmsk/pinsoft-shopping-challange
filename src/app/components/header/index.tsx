@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { SlBasket } from 'react-icons/sl';
 import { FiLogOut } from 'react-icons/fi';
 import { FaRegUser } from 'react-icons/fa';
 import Navbar from 'react-bootstrap/Navbar';
 
-import { setBasket } from '../configure';
 import './index.scss';
 import api from '../../../../intercepter';
 import Head from 'next/head';
@@ -15,6 +14,7 @@ import Head from 'next/head';
 interface Role {
     username: string;
     role: {
+        id: number;
         name: string;
     };
 }
@@ -65,6 +65,8 @@ function Header() {
             try {
                 const response = await api.get('/user_account');
 
+                console.log('Göktuğ', response);
+
                 if (response.status !== 200) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -74,7 +76,10 @@ function Header() {
                     const userRole = roles.find((role) => role.username === username);
                     if (userRole) {
                         console.log('Kullanıcı Rolü:', userRole.role.name);
+
                         if (userRole.role.name === 'user') {
+                            const userID = userRole.role.id;
+                            sessionStorage.setItem('userId', userID.toString());
                             setIsUser(true);
                         }
                     } else {
@@ -88,6 +93,7 @@ function Header() {
 
         fetchData();
     }, [isLoggedIn, username]);
+
 
 
 
