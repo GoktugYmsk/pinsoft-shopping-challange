@@ -28,7 +28,7 @@ const BasketPage: React.FC = () => {
 
     const router = useRouter();
 
-    const userIDString = sessionStorage.getItem('userId');
+    const userIDString = typeof window !== 'undefined' ? sessionStorage.getItem('userId') : null;
     const userID = userIDString ? parseFloat(userIDString) : 0;
 
     useEffect(() => {

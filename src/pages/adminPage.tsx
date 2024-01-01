@@ -4,11 +4,26 @@ import { Provider, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import { CiEdit } from "react-icons/ci";
-import Table from 'react-bootstrap/Table';
+// import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { RiDeleteBin5Line } from "react-icons/ri";
 import Toast from 'react-bootstrap/Toast';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+// import Button from '@mui/material/Button';
+// import { CiEdit } from '@mui/icons-material/Ci';
+// import { RiDeleteBin5Line } from '@mui/icons-material/Ri';
+// import Toast from '@mui/material/Toast';
+
 
 import api from '../../intercepter';
 import { store } from '@/app/store/store';
@@ -128,40 +143,43 @@ const AdminPage: React.FC = () => {
                             </Button>
                         </div>
                     </div>
-                    <Table className='container-adminPage__tableBox__box' striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th>Photo</th>
-                                <th>Name</th>
-                                <th>Explanation</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {productsData.map(item => (
-                                <tr key={item.id}>
-                                    <td>Resim eklenecek</td>
-                                    <td>{item.name}</td>
-                                    <td>{item.explanation}</td>
-                                    <td>{item.price}</td>
-                                    {/* <td>{item.category.name}</td> */}
-                                    <td className='table-down' >
-                                        <RiDeleteBin5Line onClick={() => handleDeleteClick(item.id)} className='delete-icons' />
-                                        <CiEdit onClick={() => handleEditClick(item.id)} className='edit-icons' />
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
+                    <TableContainer className='container-adminPage__tableBox__box' component={Paper}>
+                        <Table size="small" aria-label="a dense table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Photo</TableCell>
+                                    <TableCell>Name</TableCell>
+                                    <TableCell>Explanation</TableCell>
+                                    <TableCell>Price</TableCell>
+                                    <TableCell>Category</TableCell>
+                                    <TableCell>Actions</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {productsData.map(item => (
+                                    <TableRow key={item.id}>
+                                        <TableCell>Resim eklenecek</TableCell>
+                                        <TableCell>{item.name}</TableCell>
+                                        <TableCell>{item.explanation}</TableCell>
+                                        <TableCell>{item.price}</TableCell>
+                                        <TableCell>{item.category.name}</TableCell>
+                                        <TableCell>
+                                            <IconButton onClick={() => handleDeleteClick(item.id)}>
+                                                <RiDeleteBin5Line className='delete-icons' />
+                                            </IconButton>
+                                            <IconButton onClick={() => handleEditClick(item.id)}>
+                                                <CiEdit className='edit-icons' />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </div>
             </div>
             {isDeletePopup &&
                 <DeleteProductPopup setIsDeletePopup={setIsDeletePopup} setToastActive={setToastActive} deletedProductId={deletedProductId} setToastMessage={setToastMessage} />
-            }
-            {
-
             }
             {toastActive && (
                 <div className="toast-container">

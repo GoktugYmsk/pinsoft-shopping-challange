@@ -1,0 +1,36 @@
+.container-orderPage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #9EB8D9;
+    height: 94vh;
+
+    .container-orderPage__tableBox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        height: 600px;
+        width: 1200px;
+        border-radius: 20px;
+        background: white;
+
+        .container-orderPage__tableBox__box {}
+
+        .container-orderPage-button-area {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 120px;
+            width: 100%;
+
+            .orderPage-keepShopping-button {
+                background-color: #265073;
+
+                &:hover {
+                    background-color: #2c5e86;
+                }
+            }
+        }
+    }
+}

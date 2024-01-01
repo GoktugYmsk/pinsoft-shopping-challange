@@ -109,7 +109,7 @@ function Content() {
     }
 
     const hanleOrderClick = () => {
-
+        router.push('/orderPage')
     }
 
     return (
