@@ -1,39 +1,33 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
 import { useRouter } from 'next/router';
+import XLSX from 'xlsx';
 
 import { CiEdit } from "react-icons/ci";
-// import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
-import { RiDeleteBin5Line } from "react-icons/ri";
 import Toast from 'react-bootstrap/Toast';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-
 import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Button from 'react-bootstrap/Button';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
+import TableHead from '@mui/material/TableHead';
 import IconButton from '@mui/material/IconButton';
-// import Button from '@mui/material/Button';
-// import { CiEdit } from '@mui/icons-material/Ci';
-// import { RiDeleteBin5Line } from '@mui/icons-material/Ri';
-// import Toast from '@mui/material/Toast';
+import { RiDeleteBin5Line } from "react-icons/ri";
+import TableContainer from '@mui/material/TableContainer';
 
+
+import { saveAs } from 'file-saver';
+import ExcelJS from 'exceljs';
 
 import api from '../../intercepter';
 import { store } from '@/app/store/store';
 import Header from '@/app/components/header';
 import DeleteProductPopup from './adminPage/deleteProductPopup';
 
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './adminPage/index.scss'
-// import * as XLSX from 'xlsx';
-
 
 interface Product {
     id: number;
@@ -43,17 +37,14 @@ interface Product {
     category: { id: number; name: string };
 }
 
-
-
 const AdminPage: React.FC = () => {
-    const router = useRouter();
+    const [toastMessage, setToastMessage] = useState('');
     const [toastActive, setToastActive] = useState(false)
     const [isDeletePopup, setIsDeletePopup] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
     const [productsData, setProductsData] = useState<Product[]>([]);
     const [deletedProductId, setDeletedProductId] = useState<number>();
 
-
+    const router = useRouter();
     const updateProduct = typeof window !== 'undefined' ? sessionStorage.getItem('productUpdate') : null;
 
     useEffect(() => {
@@ -93,33 +84,44 @@ const AdminPage: React.FC = () => {
         fetchData();
     }, []);
 
+    const exportToExcel = async () => {
+        const dataToExport = productsData.map(item => ({
+            Name: item.name,
+            Explanation: item.explanation,
+            Price: item.price,
+            Category: item.category.name,
+        }));
 
-    // const exportToExcel = () => {
-    //     try {
-    //         const ws = XLSX.utils.json_to_sheet(productsData);
-    //         const wb = XLSX.utils.book_new();
-    //         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    //         XLSX.writeFile(wb, 'products.xlsx');
-    //     } catch (error) {
-    //         console.error('Excel dosyasına dönüştürme hatası:', error);
-    //     }
-    // };
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Products');
+
+        // İlk satır başlık
+        worksheet.addRow(['Name', 'Explanation', 'Price', 'Category']);
+
+        // Verileri ekle
+        dataToExport.forEach(item => {
+            worksheet.addRow([item.Name, item.Explanation, item.Price, item.Category]);
+        });
+
+        // Dosyayı oluştur
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+        // Dosyayı indir
+        saveAs(blob, 'products.xlsx');
+    };
 
     const handleDeleteClick = (productId: number) => {
         sessionStorage.removeItem('productUpdate');
         setIsDeletePopup(true);
-        // Seçilen ürünün id'sini DeleteProductPopup bileşenine iletiyoruz
         setDeletedProductId(productId);
     };
-
 
     const handleEditClick = (productId: number) => {
         sessionStorage.removeItem('productUpdate');
         sessionStorage.setItem('productID', String(productId));
         router.push('/updateProducts');
     };
-
-
 
     return (
         <>
@@ -135,7 +137,7 @@ const AdminPage: React.FC = () => {
                             <Button
                                 className='container-adminPage__tableBox__top__buttons__right'
                                 variant="link"
-                            // onClick={exportToExcel}
+                                onClick={exportToExcel}
                             >
                                 Export To Excel
                             </Button>

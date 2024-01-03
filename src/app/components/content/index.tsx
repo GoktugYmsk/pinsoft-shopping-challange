@@ -1,16 +1,14 @@
+'use client'
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSelector } from 'react-redux';
 
-import axios from 'axios';
 import Toast from 'react-bootstrap/Toast';
 import Button from 'react-bootstrap/Button';
 
-import Basket from '../header/basket';
+import api from '../../../../intercepter';
 import LeftContent from './leftContent';
 import RightContent from './rightContent';
 import './index.scss';
-import api from '../../../../intercepter';
 
 interface RootState {
     isBasketActive: {
@@ -32,19 +30,15 @@ interface Product {
 
 function Content() {
     const [filtre, setFiltre] = useState<string>('');
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastActive, setToastActive] = useState(false);
     const [categories, setCategories] = useState<Category[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
-    const [toastActive, setToastActive] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
     const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean | undefined>(undefined);
     const [fiyatAraligi, setFiyatAraligi] = useState<[number, number]>([0, 1000]);
 
-    let islogin: string | null = null;
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean | undefined>(undefined);
-
     const router = useRouter();
-
-    // const isBasketActive = useSelector((state: RootState) => state.isBasketActive.basket);
 
     const urunleriFiltrele = (urun: Product) => {
         return (
@@ -54,7 +48,6 @@ function Content() {
             (selectedCategories.length === 0 || selectedCategories.includes(urun.id))
         );
     };
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -68,7 +61,6 @@ function Content() {
                     let loggedIn = false;
                     return loggedIn;
                 }
-
             }
         };
 
@@ -96,7 +88,6 @@ function Content() {
         fetchData();
     }, []);
 
-
     const handleSigninClick = () => {
         router.push('/login');
     }
@@ -107,7 +98,6 @@ function Content() {
 
     return (
         <>
-            {/* <div className={`container-content ${isBasketActive ? 'opacityActive' : ''}`}> */}
             <div className='container-content'>
                 <div className='container-content__box'>
                     <LeftContent
@@ -127,7 +117,6 @@ function Content() {
                     <Button className='container-content__order-button' onClick={hanleOrderClick} variant="light">Siparişlerim</Button>
                 }
             </div>
-            {/* {isBasketActive && <Basket />} */}
             {
                 toastActive && (
                     <div className="toast-container">

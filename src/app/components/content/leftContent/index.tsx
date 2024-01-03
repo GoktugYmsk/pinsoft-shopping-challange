@@ -14,8 +14,6 @@ interface LeftContentProps {
     categories: Category[];
 }
 
-
-
 interface Category {
     id: number;
     name: string;
@@ -32,17 +30,14 @@ const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setF
                 if (response.status !== 200) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-
                 const data = await response.data;
                 setCategories(data);
             } catch (error) {
                 console.error('Veri alınamadı:', error);
             }
         };
-
         fetchData();
     }, []);
-
 
     const handleCheckboxChange = (categoryId: number) => {
         setSelectedCategories((prevSelectedCategories) => {
@@ -53,7 +48,6 @@ const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setF
             }
         });
     };
-
 
     return (
         <div className='container-content__box-left'>

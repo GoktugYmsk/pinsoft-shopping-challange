@@ -3,7 +3,7 @@
     align-items: center;
     justify-content: center;
     background: #9EB8D9;
-    height: 94vh;
+    height: 93vh;
 
     .container-orderPage__tableBox {
         display: flex;
@@ -15,7 +15,19 @@
         border-radius: 20px;
         background: white;
 
-        // .container-orderPage__tableBox__box {}
+        th {
+            position: sticky;
+            top: 0;
+            background: #b8b6b6;
+            height: 40px;
+            z-index: 1;
+        }
+
+        .container-orderPage__tableBox__box {
+            height: 400px;
+            overflow: scroll;
+            // background: red;
+        }
 
         .container-orderPage-button-area {
             display: flex;

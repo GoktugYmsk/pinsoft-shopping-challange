@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 
+import Head from 'next/head';
 import { SlBasket } from 'react-icons/sl';
 import { FiLogOut } from 'react-icons/fi';
 import { FaRegUser } from 'react-icons/fa';
 import Navbar from 'react-bootstrap/Navbar';
 
-import './index.scss';
 import api from '../../../../intercepter';
-import Head from 'next/head';
+import './index.scss';
 
 interface Role {
     username: string;
@@ -20,13 +20,11 @@ interface Role {
     };
 }
 
-
 function Header() {
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean | undefined>(undefined);
     const [isUser, setIsUser] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean | undefined>(undefined);
 
     let islogin: string | null = null;
-
     const router = useRouter();
 
     const isBasketActive = useSelector((state: { isBasketActive: { basket: boolean } }) => state.isBasketActive.basket);
@@ -40,7 +38,6 @@ function Header() {
                 return loggedIn;
             }
         };
-
         fetchData().then((value) => {
             setIsLoggedIn(value);
         });
@@ -87,19 +84,12 @@ function Header() {
                 console.error('Veri alınamadı:', error);
             }
         };
-
         fetchData();
     }, [isLoggedIn, username]);
-
-
-
-
-
 
     const handleBasketClick = () => {
         router.push('/basketPage')
     }
-
 
     return (
         <>

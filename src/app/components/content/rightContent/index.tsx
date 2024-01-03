@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import Skeleton from 'react-loading-skeleton';
 import Button from 'react-bootstrap/Button';
 
@@ -21,10 +22,7 @@ interface RightContentProps {
 
 function RightContent({
     products,
-    urunleriFiltrele,
-    setToastActive,
-    setToastMessage
-}: RightContentProps) {
+    urunleriFiltrele, setToastActive, setToastMessage }: RightContentProps) {
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [productInBasket, setProductInBasket] = useState<{ [key: number]: boolean }>({});
 
@@ -43,7 +41,6 @@ function RightContent({
         let updatedBasket = sessionStorageBasket ? JSON.parse(sessionStorageBasket) : [];
 
         if (!Array.isArray(updatedBasket)) {
-            // Eğer updatedBasket bir dizi değilse, boş bir dizi olarak başlat
             updatedBasket = [];
         }
 
@@ -53,7 +50,6 @@ function RightContent({
         setToastActive(true);
         setToastMessage('Ürün sepete eklendi!');
     };
-
 
     const handleRemoveFromCart = (productId: number) => {
         const sessionStorageBasket = sessionStorage.getItem('basketProducts');
@@ -104,13 +100,3 @@ function RightContent({
 }
 
 export default RightContent;
-
-
-// const orderPayload = products.reduce((acc: { [key: string]: any }, product) => {
-            //     acc[product.name.trim()] = {
-            //         price: 500,
-            //         quantity: 2,
-            //         userId: 1,
-            //     };
-            //     return acc;
-            // }, {});

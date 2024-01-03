@@ -1,12 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Provider } from 'react-redux';
+
 import Button from 'react-bootstrap/Button';
+
 import api from '../../intercepter';
 import { store } from '@/app/store/store';
 import Header from '@/app/components/header';
 import '../pages/addProduct/index.scss';
-import { useRouter } from 'next/navigation';
 
 const AddProduct: React.FC = () => {
     const router = useRouter();
@@ -38,7 +40,6 @@ const AddProduct: React.FC = () => {
                 explanation: explanation,
                 categoryId: categoryId,
             });
-
             router.push('/adminPage');
 
             if (response.status !== 200) {
@@ -63,7 +64,6 @@ const AddProduct: React.FC = () => {
                 console.error('Veri alınamadı: get isteği olan products', error);
             }
         };
-
         fetchData();
     }, []);
 

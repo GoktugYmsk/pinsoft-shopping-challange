@@ -68,7 +68,6 @@ const OrderPage: React.FC = () => {
                 <Header />
             </Provider>
             <div className="container-orderPage" >
-
                 <div className='container-orderPage__tableBox'>
                     <h1>Orders</h1>
                     <TableContainer className='container-orderPage__tableBox__box' component={Paper}>

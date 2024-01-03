@@ -1,19 +1,17 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 import { store } from '@/app/store/store';
 import Header from '@/app/components/header';
 
-import './basketPage/index.scss';
-import { useRouter } from 'next/navigation';
 import api from '../../intercepter';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './basketPage/index.scss';
 
 interface Product {
     id: number;
@@ -26,7 +24,6 @@ interface Product {
 
 const BasketPage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
-
     const router = useRouter();
 
     const userIDString = typeof window !== 'undefined' ? sessionStorage.getItem('userId') : null;
@@ -34,14 +31,11 @@ const BasketPage: React.FC = () => {
 
     useEffect(() => {
         const addedBasketProducts = sessionStorage.getItem('basketProducts');
-        console.log('ADDEDPRODUCTSBASKET', addedBasketProducts);
         if (addedBasketProducts) {
             const basketProducts: Product[] = JSON.parse(addedBasketProducts);
             setProducts(basketProducts);
         }
     }, []);
-
-
 
     const removeFromTheBasket = (productId: number) => {
         const updatedProducts = products.filter((product) => product.id !== productId);
@@ -61,22 +55,16 @@ const BasketPage: React.FC = () => {
         router.push('/main');
     };
 
-
-
-
     const handleCompleteOrder = async () => {
         try {
-
-            const deneme =
+            const orderPayload =
             {
                 name: products.length > 0 ? products[0].name : '',
                 price: products.length > 0 ? products[0].price : 0,
                 quantity: products.length > 0 ? products[0].quantity : 0,
                 userId: userID,
             }
-
-            console.log('orderPayload', deneme)
-            const response = await api.post('/orders', deneme);
+            const response = await api.post('/orders', orderPayload);
 
             if (response.status !== 200) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -96,19 +84,13 @@ const BasketPage: React.FC = () => {
                 if (response.status !== 200) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-
                 const data = await response.data;
-                console.log('ORDERS', data)
             } catch (error) {
-                console.error('ORDERS alınamadı:', error);
+                console.error('Veriler alınamadı:', error);
             }
         };
-
         fetchData();
     }, []);
-
-
-
 
     return (
         <>
