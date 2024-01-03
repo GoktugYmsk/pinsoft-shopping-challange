@@ -55,7 +55,6 @@ const AdminPage: React.FC = () => {
 
 
     const updateProduct = typeof window !== 'undefined' ? sessionStorage.getItem('productUpdate') : null;
-    console.log('updateProduct', updateProduct);
 
     useEffect(() => {
 
@@ -85,7 +84,6 @@ const AdminPage: React.FC = () => {
                 }
 
                 const data = await response.data;
-                console.log('data', data);
                 setProductsData(data)
             } catch (error) {
                 console.error('Veri alınamadı:', error);

@@ -49,7 +49,6 @@ const AddProduct: React.FC = () => {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.data;
-                console.log('data', data);
                 const maxId = data.reduce((max: any, item: any) => Math.max(max, item.id), 0);
                 setIdCount(maxId + 1);
             } catch (error) {
@@ -96,7 +95,6 @@ const AddProduct: React.FC = () => {
     // };
 
     const productId = typeof window !== 'undefined' ? sessionStorage.getItem('productID') : null;
-    console.log('productId', productId);
 
     const handleSaveClick = async () => {
         try {

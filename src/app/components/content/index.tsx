@@ -46,10 +46,6 @@ function Content() {
 
     // const isBasketActive = useSelector((state: RootState) => state.isBasketActive.basket);
 
-    useEffect
-
-    console.log('selectedCategories', selectedCategories)
-
     const urunleriFiltrele = (urun: Product) => {
         return (
             urun.name.toLowerCase().includes(filtre.toLowerCase()) &&
@@ -100,9 +96,6 @@ function Content() {
         fetchData();
     }, []);
 
-
-    console.log('allProducts', allProducts)
-    console.log('categories', categories)
 
     const handleSigninClick = () => {
         router.push('/login');

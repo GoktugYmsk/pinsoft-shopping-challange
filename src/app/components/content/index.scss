@@ -1,7 +1,7 @@
 .container-content {
     display: flex;
     flex-direction: column;
-    height: 94vh;
+    height: 93vh;
     width: 100%;
 
     .container-content__signin-button {
@@ -149,4 +149,10 @@
     top: 120px;
     right: 20px;
     background: #a2e47c;
+}
+
+@media screen and (max-width: 1445px) {
+    .container-content {
+        height: 92vh;
+    }
 }

@@ -37,14 +37,13 @@ const OrderPage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await api.get(`/orders ${userIDString} `);
+                const response = await api.get(`/orders/${userIDString} `);
 
                 if (response.status !== 200) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
                 const data = await response.data;
-                console.log('data', data);
                 setGetOrders(data);
             } catch (error) {
                 console.error('Veri alınamadı:', error);

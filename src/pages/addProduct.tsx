@@ -59,19 +59,13 @@ const AddProduct: React.FC = () => {
                 }
 
                 const data = await response.data;
-                console.log('data', data);
             } catch (error) {
                 console.error('Veri alınamadı: get isteği olan products', error);
-                console.log('get isteği olan products');
             }
         };
 
         fetchData();
     }, []);
-
-    useEffect(() => {
-        console.log('category', category);
-    }, [category]);
 
     return (
         <>

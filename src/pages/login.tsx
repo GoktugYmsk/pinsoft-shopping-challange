@@ -39,8 +39,8 @@ const Login: React.FC = () => {
     const handleLogin = async () => {
         try {
             const authResponse = await axios.post(process.env.NEXT_PUBLIC_API_URL + 'authenticate', {
-                username: username,
-                password: password,
+                username: username.trim(),
+                password: password.trim(),
             });
 
             sessionStorage.setItem('username', username);
@@ -85,32 +85,34 @@ const Login: React.FC = () => {
 
 
     return (
-        <div className='container-login'>
+        <>
             <Provider store={store}>
                 <Header />
             </Provider>
-            <div className='container-login__box'>
-                <h1>WELCOME</h1>
-                <div className='container-login__box__top-input'>
-                    <FaRegUser className='container-login__box__user-icon' />
-                    <label>
-                        <input type="text" placeholder='username' value={username} onChange={(e) => setUsername(e.target.value)} />
-                    </label>
-                </div>
-                <div className='container-login__box__down-input'>
-                    <GoLock className='container-login__box__lock-icon' />
-                    <label>
-                        <input type="password" placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)} />
-                    </label>
-                </div>
-                <button className='container-login__box__login-button' onClick={handleLogin}>LOGIN</button>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <div className='container-login__box__signup-area'>
-                    <p>Not a member? </p>
-                    <p className='container-login__box__signup-button' onClick={handleSigninClick}> Signup</p>
+            <div className='container-login'>
+                <div className='container-login__box'>
+                    <h1>WELCOME</h1>
+                    <div className='container-login__box__top-input'>
+                        <FaRegUser className='container-login__box__user-icon' />
+                        <label>
+                            <input type="text" placeholder='username' value={username} onChange={(e) => setUsername(e.target.value)} />
+                        </label>
+                    </div>
+                    <div className='container-login__box__down-input'>
+                        <GoLock className='container-login__box__lock-icon' />
+                        <label>
+                            <input type="password" placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                        </label>
+                    </div>
+                    <button className='container-login__box__login-button' onClick={handleLogin}>LOGIN</button>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    <div className='container-login__box__signup-area'>
+                        <p>Not a member? </p>
+                        <p className='container-login__box__signup-button' onClick={handleSigninClick}> Signup</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

@@ -13,6 +13,7 @@ import Head from 'next/head';
 
 interface Role {
     username: string;
+    id: number;
     role: {
         id: number;
         name: string;
@@ -49,11 +50,9 @@ function Header() {
         sessionStorage.removeItem('productUpdate');
         sessionStorage.removeItem('userTokenTry');
         sessionStorage.removeItem('productID');
-        console.log('Çıkış yapıldı');
 
         try {
             await router.push('/main');
-            console.log('Maine Yönlendiriliyor');
             setTimeout(() => window.location.reload(), 1000);
         } catch (error) {
             console.error('Yönlendirme hatası:', error);
@@ -65,8 +64,6 @@ function Header() {
             try {
                 const response = await api.get('/user_account');
 
-                console.log('Göktuğ', response);
-
                 if (response.status !== 200) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -75,10 +72,10 @@ function Header() {
                 if (roles && isLoggedIn) {
                     const userRole = roles.find((role) => role.username === username);
                     if (userRole) {
-                        console.log('Kullanıcı Rolü:', userRole.role.name);
+                        console.log('Kullanıcı Rolü:', userRole.id);
 
                         if (userRole.role.name === 'user') {
-                            const userID = userRole.role.id;
+                            const userID = userRole.id;
                             sessionStorage.setItem('userId', userID.toString());
                             setIsUser(true);
                         }

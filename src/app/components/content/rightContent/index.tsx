@@ -40,13 +40,20 @@ function RightContent({
 
     const handleAddBasket = (product: Product) => {
         const sessionStorageBasket = sessionStorage.getItem('basketProducts');
-        const updatedBasket = sessionStorageBasket ? JSON.parse(sessionStorageBasket) : [];
+        let updatedBasket = sessionStorageBasket ? JSON.parse(sessionStorageBasket) : [];
+
+        if (!Array.isArray(updatedBasket)) {
+            // Eğer updatedBasket bir dizi değilse, boş bir dizi olarak başlat
+            updatedBasket = [];
+        }
+
         updatedBasket.push({ ...product, quantity: 1 });
         sessionStorage.setItem('basketProducts', JSON.stringify(updatedBasket));
         setProductInBasket((prev) => ({ ...prev, [product.id]: true }));
         setToastActive(true);
         setToastMessage('Ürün sepete eklendi!');
     };
+
 
     const handleRemoveFromCart = (productId: number) => {
         const sessionStorageBasket = sessionStorage.getItem('basketProducts');
@@ -97,3 +104,13 @@ function RightContent({
 }
 
 export default RightContent;
+
+
+// const orderPayload = products.reduce((acc: { [key: string]: any }, product) => {
+            //     acc[product.name.trim()] = {
+            //         price: 500,
+            //         quantity: 2,
+            //         userId: 1,
+            //     };
+            //     return acc;
+            // }, {});

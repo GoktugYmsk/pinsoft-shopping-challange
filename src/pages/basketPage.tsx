@@ -14,6 +14,7 @@ import './basketPage/index.scss';
 import { useRouter } from 'next/navigation';
 import api from '../../intercepter';
 
+
 interface Product {
     id: number;
     name: string;
@@ -33,16 +34,14 @@ const BasketPage: React.FC = () => {
 
     useEffect(() => {
         const addedBasketProducts = sessionStorage.getItem('basketProducts');
-        console.log('addedBasketProducts', addedBasketProducts);
+        console.log('ADDEDPRODUCTSBASKET', addedBasketProducts);
         if (addedBasketProducts) {
             const basketProducts: Product[] = JSON.parse(addedBasketProducts);
             setProducts(basketProducts);
         }
     }, []);
 
-    const handleOnKeepShopping = () => {
-        router.push('/main');
-    };
+
 
     const removeFromTheBasket = (productId: number) => {
         const updatedProducts = products.filter((product) => product.id !== productId);
@@ -58,30 +57,57 @@ const BasketPage: React.FC = () => {
         sessionStorage.setItem('basketProducts', JSON.stringify(updatedProducts));
     };
 
+    const handleOnKeepShopping = () => {
+        router.push('/main');
+    };
+
+
+
+
     const handleCompleteOrder = async () => {
         try {
 
-            const orderPayload = products.map((product) => ({
-                name: product.name,
-                price: product.price,
-                quantity: product.quantity,
+            const deneme =
+            {
+                name: products.length > 0 ? products[0].name : '',
+                price: products.length > 0 ? products[0].price : 0,
+                quantity: products.length > 0 ? products[0].quantity : 0,
                 userId: userID,
-            }));
-            console.log('orderPayload', orderPayload)
-            const response = await api.post('/orders', orderPayload);
+            }
+
+            console.log('orderPayload', deneme)
+            const response = await api.post('/orders', deneme);
 
             if (response.status !== 200) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             setProducts([]);
             sessionStorage.removeItem('basketProducts');
-
         } catch (error) {
             console.error('Veri alınamadı:', error);
         }
-    }
+    };
 
-    // order isteğine bakılacak
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await api.get(`/orders/${userID}`);
+
+                if (response.status !== 200) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.data;
+                console.log('ORDERS', data)
+            } catch (error) {
+                console.error('ORDERS alınamadı:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
 
 
     return (
@@ -150,11 +176,9 @@ const BasketPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
         </>
     );
 };
 
 export default BasketPage;
-
-

@@ -15,7 +15,6 @@ interface DeleteProductPopupProps {
 
 function DeleteProductPopup({ setIsDeletePopup, setToastActive, deletedProductId, setToastMessage }: DeleteProductPopupProps) {
     const router = useRouter();
-    console.log('deletedProductId', deletedProductId)
     const handleDeleteProduct = async () => {
         try {
             await api.delete(`/product/${deletedProductId}`);
