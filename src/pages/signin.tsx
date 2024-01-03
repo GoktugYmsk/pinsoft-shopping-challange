@@ -42,33 +42,35 @@ const Signup: React.FC<SignupProps> = () => {
     };
 
     return (
-        <div className='container-signin' >
+        <>
             <Provider store={store}>
                 <Header />
             </Provider>
-            <div className='container-signin__box' >
-                <h1>REGISTER</h1>
-                <div className='container-signin__box__top-input' >
-                    <FaRegUser className='container-signin__box__user-icon' />
-                    <label>
-                        <input type="text" placeholder='Username' value={fullName} onChange={(e) => setFullName(e.target.value)} />
-                    </label>
+            <div className='container-signin' >
+                <div className='container-signin__box' >
+                    <h1>REGISTER</h1>
+                    <div className='container-signin__box__top-input' >
+                        <FaRegUser className='container-signin__box__user-icon' />
+                        <label>
+                            <input type="text" placeholder='Username' value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                        </label>
+                    </div>
+                    <div className='container-signin__box__down-input' >
+                        <MdOutlineMailOutline className='container-signin__box__email-icon' />
+                        <label>
+                            <input type="text" placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                        </label>
+                    </div>
+                    <div className='container-signin__box__down-input' >
+                        <GoLock className='container-signin__box__lock-icon' />
+                        <label>
+                            <input type="password" placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                        </label>
+                    </div>
+                    <button className='container-signin__box__signin-button' onClick={handleSignup} >SIGN UP</button>
                 </div>
-                <div className='container-signin__box__down-input' >
-                    <MdOutlineMailOutline className='container-signin__box__email-icon' />
-                    <label>
-                        <input type="text" placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)} />
-                    </label>
-                </div>
-                <div className='container-signin__box__down-input' >
-                    <GoLock className='container-signin__box__lock-icon' />
-                    <label>
-                        <input type="password" placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)} />
-                    </label>
-                </div>
-                <button className='container-signin__box__signin-button' onClick={handleSignup} >SIGN UP</button>
             </div>
-        </div>
+        </>
     );
 };
 

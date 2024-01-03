@@ -1,7 +1,14 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
 .container-signin {
     display: flex;
     flex-direction: column;
-    height: 94vh;
+    align-items: center;
+    justify-content: center;
+    height: 93vh;
     background: #9EB8D9;
     overflow: hidden !important;
 
@@ -13,9 +20,6 @@
         gap: 30px;
         position: relative;
         width: 383px;
-        height: 487px;
-        top: 156px;
-        left: 600px;
         border-radius: 20px;
         background: #FFFFFF;
         padding: 20px;
