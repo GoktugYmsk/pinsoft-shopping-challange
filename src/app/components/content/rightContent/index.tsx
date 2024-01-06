@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-
 import Skeleton from 'react-loading-skeleton';
 import Button from 'react-bootstrap/Button';
-
 import ProductPopup from './productPopup';
+
+import './index.scss'
 
 interface Product {
     id: number;
@@ -11,6 +11,7 @@ interface Product {
     price: number;
     category: string;
     explanation: string;
+    base64image: string;
 }
 
 interface RightContentProps {
@@ -22,7 +23,10 @@ interface RightContentProps {
 
 function RightContent({
     products,
-    urunleriFiltrele, setToastActive, setToastMessage }: RightContentProps) {
+    urunleriFiltrele,
+    setToastActive,
+    setToastMessage,
+}: RightContentProps) {
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [productInBasket, setProductInBasket] = useState<{ [key: number]: boolean }>({});
 
@@ -62,21 +66,42 @@ function RightContent({
     };
 
     const handleProductClick = (product: Product) => {
-        setSelectedProduct(product);
+        if (!document.activeElement?.classList.contains('container-content__box-right__products__button')) {
+            setSelectedProduct(product);
+        }
+    };
+
+    const decodeBase64Image = (base64: string) => {
+        const base64ImageData = base64.split(",")[1];
+        const binaryString = atob(base64ImageData);
+        const byteNumbers = new Array(binaryString.length);
+
+        for (let i = 0; i < binaryString.length; i++) {
+            byteNumbers[i] = binaryString.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'image/jpeg' });
+        const dataUrl = `data:image/jpeg;base64,${btoa(String.fromCharCode.apply(null, byteNumbers))}`;
+
+        return dataUrl;
     };
 
     return (
         <div className='container-content__box-right'>
             <div className='container-content__box-right__products'>
                 {products.filter(urunleriFiltrele).map((product, index) => (
-                    <div className='container-content__box-right__products__top' key={index}>
-                        <p onClick={() => handleProductClick(product)}>
-                            {product.name || <Skeleton />}
-                        </p>
+                    <div onClick={() => handleProductClick(product)} className='container-content__box-right__products__top' key={index}>
+                        {product.base64image && (
+                            <img src={decodeBase64Image(product.base64image)} alt={product.name} />
+                        )}
+                        <p >{product.name || <Skeleton />}</p>
                         <p>{product.price || <Skeleton />} TL</p>
                         <p>{product.explanation || <Skeleton />} </p>
+
                         <Button
                             variant='info'
+                            className='container-content__box-right__products__button'
                             onClick={() => {
                                 const isProductInBasket = productInBasket[product.id];
 

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { useRouter } from 'next/router';
-import XLSX from 'xlsx';
 
 import { CiEdit } from "react-icons/ci";
 import Toast from 'react-bootstrap/Toast';
@@ -95,19 +94,15 @@ const AdminPage: React.FC = () => {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Products');
 
-        // İlk satır başlık
         worksheet.addRow(['Name', 'Explanation', 'Price', 'Category']);
 
-        // Verileri ekle
         dataToExport.forEach(item => {
             worksheet.addRow([item.Name, item.Explanation, item.Price, item.Category]);
         });
 
-        // Dosyayı oluştur
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-        // Dosyayı indir
         saveAs(blob, 'products.xlsx');
     };
 
@@ -158,7 +153,7 @@ const AdminPage: React.FC = () => {
                             <TableBody>
                                 {productsData.map(item => (
                                     <TableRow key={item.id}>
-                                        <TableCell>Resim eklenecek</TableCell>
+                                        <TableCell>resim eklenecek</TableCell>
                                         <TableCell>{item.name}</TableCell>
                                         <TableCell>{item.explanation}</TableCell>
                                         <TableCell>{item.price}</TableCell>

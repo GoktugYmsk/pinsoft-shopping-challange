@@ -77,12 +77,9 @@ const Login: React.FC = () => {
         }
     };
 
-
-
     const handleSigninClick = () => {
         router.push('/signin');
     };
-
 
     return (
         <>

@@ -26,6 +26,7 @@ interface Product {
     price: number;
     category: string;
     explanation: string;
+    base64image: string;
 }
 
 function Content() {
@@ -79,6 +80,7 @@ function Content() {
                 const categoriesData = categoriesResponse.data;
 
                 setAllProducts(productsData);
+                console.log('allProducts', allProducts);
                 setCategories(categoriesData);
             } catch (error) {
                 console.error('Veri alınamadı:', error);

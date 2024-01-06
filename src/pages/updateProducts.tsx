@@ -12,20 +12,22 @@ import { useRouter } from 'next/navigation';
 
 const AddProduct: React.FC = () => {
     const [productName, setProductName] = useState('');
-    // const [photo, setPhoto] = useState<File | string>('');
+    const [photo, setPhoto] = useState<File | string>('');
     const router = useRouter();
     const [price, setPrice] = useState(0);
     const [category, setCategory] = useState('');
     const [explanation, setExplanation] = useState('');
-    const [idCount, setIdCount] = useState();
+    // const [idCount, setIdCount] = useState();
 
-    // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const file = e.target.files?.[0];
+    const productId = typeof window !== 'undefined' ? sessionStorage.getItem('productID') : null;
 
-    //     if (file) {
-    //         setPhoto(file);
-    //     }
-    // };
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+
+        if (file) {
+            setPhoto(file);
+        }
+    };
 
     const mapCategoryToId = (selectedCategory: string): number => {
         switch (selectedCategory) {
@@ -39,62 +41,6 @@ const AddProduct: React.FC = () => {
                 return 0;
         }
     };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await api.get('/products');
-
-                if (response.status !== 200) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.data;
-                const maxId = data.reduce((max: any, item: any) => Math.max(max, item.id), 0);
-                setIdCount(maxId + 1);
-            } catch (error) {
-                console.error('Veri alınamadı:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await api.delete(`/product/${109}`);
-
-    //             const data = await response.data;
-    //         } catch (error) {
-    //             console.error('Veri alınamadı:', error);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []);
-
-
-    // const handleSaveClick = async () => {
-    //     try {
-    //         const response = await api.put('/products', {
-    //             name: productName,
-    //             price: price,
-    //             // You have to look at how can i do float types
-    //             explanation: explanation,
-    //             categoryId: idCount,
-    //         });
-
-    //         if (response.status !== 200) {
-    //             throw new Error(`HTTP error! Status: ${response.status}`);
-    //         }
-    //     } catch (error) {
-    //         console.error('Veri alınamadı:', error);
-    //     }
-    // };
-
-    const productId = typeof window !== 'undefined' ? sessionStorage.getItem('productID') : null;
 
     const handleSaveClick = async () => {
         try {
@@ -139,7 +85,7 @@ const AddProduct: React.FC = () => {
                                 id='file-input'
                                 type='file'
                                 style={{ display: 'none' }}
-                            // onChange={(e) => handleFileChange(e)}
+                                onChange={(e) => handleFileChange(e)}
                             />
                             Add Photo
                         </label>

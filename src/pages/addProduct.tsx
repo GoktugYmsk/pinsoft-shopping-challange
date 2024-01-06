@@ -12,10 +12,12 @@ import '../pages/addProduct/index.scss';
 
 const AddProduct: React.FC = () => {
     const router = useRouter();
+    const [photo, setPhoto] = useState<File | string>('');
     const [productName, setProductName] = useState('');
     const [price, setPrice] = useState(0);
     const [category, setCategory] = useState('');
     const [explanation, setExplanation] = useState('');
+    const [loadedImage, setLoadedImage] = useState<string>('');
 
     const mapCategoryToId = (selectedCategory: string): number => {
         switch (selectedCategory) {
@@ -34,12 +36,26 @@ const AddProduct: React.FC = () => {
         try {
             const categoryId = mapCategoryToId(category);
 
+            let base64Image = '';
+            if (typeof photo === 'string') {
+                base64Image = photo;
+            } else {
+                const reader = new FileReader();
+
+                reader.onloadend = () => {
+                    base64Image = reader.result as string;
+                };
+
+                reader.readAsDataURL(photo as File);
+            }
             const response = await api.post('/products', {
                 name: productName,
                 price: price,
                 explanation: explanation,
                 categoryId: categoryId,
+                base64Image: photo,
             });
+
             router.push('/adminPage');
 
             if (response.status !== 200) {
@@ -67,6 +83,23 @@ const AddProduct: React.FC = () => {
         fetchData();
     }, []);
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                const base64Image = reader.result as string;;
+                setLoadedImage(base64Image);
+                setPhoto(base64Image);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    };
+
+
     return (
         <>
             <Provider store={store}>
@@ -87,9 +120,17 @@ const AddProduct: React.FC = () => {
                                 id='file-input'
                                 type='file'
                                 style={{ display: 'none' }}
+                                onChange={(e) => handleFileChange(e)}
                             />
                             Add Photo
                         </label>
+                        {loadedImage && (
+                            <img
+                                src={loadedImage}
+                                alt='Loaded Image'
+                                style={{ maxWidth: '100%', marginTop: '10px' }}
+                            />
+                        )}
                     </div>
                     <div className='container-addProduct__table-box__price-category'>
                         <input
