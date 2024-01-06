@@ -34,6 +34,7 @@ interface Product {
     explanation: string;
     price: number;
     category: { id: number; name: string };
+    base64image: string;
 }
 
 const AdminPage: React.FC = () => {
@@ -118,6 +119,27 @@ const AdminPage: React.FC = () => {
         router.push('/updateProducts');
     };
 
+    const decodeBase64Image = (base64: string) => {
+        try {
+            const base64ImageData = base64.split(",")[1];
+            const binaryString = atob(base64ImageData);
+
+            const byteNumbers = new Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                byteNumbers[i] = binaryString.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'image/jpeg' });
+            const dataUrl = URL.createObjectURL(blob);
+
+            return dataUrl;
+        } catch (error) {
+            console.error('Base64 decoding error:', error);
+            return '';
+        }
+    };
+
     return (
         <>
             <Provider store={store}>
@@ -153,7 +175,11 @@ const AdminPage: React.FC = () => {
                             <TableBody>
                                 {productsData.map(item => (
                                     <TableRow key={item.id}>
-                                        <TableCell>resim eklenecek</TableCell>
+                                        {item.base64image && (
+                                            <TableCell>
+                                                <img className='container-adminPage__tableBox__box__image' src={decodeBase64Image(item.base64image)} alt={item.name} />
+                                            </TableCell>
+                                        )}
                                         <TableCell>{item.name}</TableCell>
                                         <TableCell>{item.explanation}</TableCell>
                                         <TableCell>{item.price}</TableCell>
@@ -169,6 +195,7 @@ const AdminPage: React.FC = () => {
                                     </TableRow>
                                 ))}
                             </TableBody>
+
                         </Table>
                     </TableContainer>
                 </div>

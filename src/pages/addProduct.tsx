@@ -14,10 +14,9 @@ const AddProduct: React.FC = () => {
     const router = useRouter();
     const [photo, setPhoto] = useState<File | string>('');
     const [productName, setProductName] = useState('');
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
     const [explanation, setExplanation] = useState('');
-    const [loadedImage, setLoadedImage] = useState<string>('');
 
     const mapCategoryToId = (selectedCategory: string): number => {
         switch (selectedCategory) {
@@ -31,6 +30,8 @@ const AddProduct: React.FC = () => {
                 return 0;
         }
     };
+
+
 
     const handleSaveClick = async () => {
         try {
@@ -48,9 +49,12 @@ const AddProduct: React.FC = () => {
 
                 reader.readAsDataURL(photo as File);
             }
+
+            const floatPrice: number = parseFloat(price);
+
             const response = await api.post('/products', {
                 name: productName,
-                price: price,
+                price: floatPrice,
                 explanation: explanation,
                 categoryId: categoryId,
                 base64Image: photo,
@@ -65,6 +69,7 @@ const AddProduct: React.FC = () => {
             console.error('Veri gönderilemedi:', error);
         }
     };
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -91,7 +96,6 @@ const AddProduct: React.FC = () => {
 
             reader.onloadend = () => {
                 const base64Image = reader.result as string;;
-                setLoadedImage(base64Image);
                 setPhoto(base64Image);
             };
 
@@ -124,20 +128,13 @@ const AddProduct: React.FC = () => {
                             />
                             Add Photo
                         </label>
-                        {loadedImage && (
-                            <img
-                                src={loadedImage}
-                                alt='Loaded Image'
-                                style={{ maxWidth: '100%', marginTop: '10px' }}
-                            />
-                        )}
                     </div>
                     <div className='container-addProduct__table-box__price-category'>
                         <input
                             type='number'
                             placeholder='Price'
                             value={price}
-                            onChange={(e) => setPrice(Number(e.target.value))}
+                            onChange={(e) => setPrice((e.target.value))}
                         />
                         <select
                             value={category}

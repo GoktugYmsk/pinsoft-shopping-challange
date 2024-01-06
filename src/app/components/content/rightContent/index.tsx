@@ -72,20 +72,26 @@ function RightContent({
     };
 
     const decodeBase64Image = (base64: string) => {
-        const base64ImageData = base64.split(",")[1];
-        const binaryString = atob(base64ImageData);
-        const byteNumbers = new Array(binaryString.length);
+        try {
+            const base64ImageData = base64.split(",")[1];
+            const binaryString = atob(base64ImageData);
 
-        for (let i = 0; i < binaryString.length; i++) {
-            byteNumbers[i] = binaryString.charCodeAt(i);
+            const byteNumbers = new Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                byteNumbers[i] = binaryString.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'image/jpeg' });
+            const dataUrl = URL.createObjectURL(blob);
+
+            return dataUrl;
+        } catch (error) {
+            console.error('Base64 decoding error:', error);
+            return '';
         }
-
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: 'image/jpeg' });
-        const dataUrl = `data:image/jpeg;base64,${btoa(String.fromCharCode.apply(null, byteNumbers))}`;
-
-        return dataUrl;
     };
+
 
     return (
         <div className='container-content__box-right'>

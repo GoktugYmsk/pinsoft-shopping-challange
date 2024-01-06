@@ -14,10 +14,9 @@ const AddProduct: React.FC = () => {
     const [productName, setProductName] = useState('');
     const [photo, setPhoto] = useState<File | string>('');
     const router = useRouter();
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
     const [explanation, setExplanation] = useState('');
-    // const [idCount, setIdCount] = useState();
 
     const productId = typeof window !== 'undefined' ? sessionStorage.getItem('productID') : null;
 
@@ -25,7 +24,14 @@ const AddProduct: React.FC = () => {
         const file = e.target.files?.[0];
 
         if (file) {
-            setPhoto(file);
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                const base64Image = reader.result as string;;
+                setPhoto(base64Image);
+            };
+
+            reader.readAsDataURL(file);
         }
     };
 
@@ -46,12 +52,15 @@ const AddProduct: React.FC = () => {
         try {
             const categoryId = mapCategoryToId(category);
 
+            const floatPrice: number = parseFloat(price);
+
             const response = await api.put('/products', {
                 id: productId,
                 name: productName,
-                price: price,
+                price: floatPrice,
                 explanation: explanation,
                 categoryId: categoryId,
+                base64Image: photo,
             });
 
             sessionStorage.setItem('productUpdate', 'true');
@@ -95,7 +104,7 @@ const AddProduct: React.FC = () => {
                             type='number'
                             placeholder='Price'
                             value={price}
-                            onChange={(e) => setPrice(Number(e.target.value))}
+                            onChange={(e) => setPrice((e.target.value))}
                         />
                         <select
                             value={category}

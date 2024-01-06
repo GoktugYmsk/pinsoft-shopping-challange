@@ -43,14 +43,14 @@ function Header() {
         });
     }, [islogin]);
     const handleLogoutClick = async () => {
-        localStorage.setItem('isLogin', String('false'));
         sessionStorage.removeItem('productUpdate');
         sessionStorage.removeItem('userTokenTry');
         sessionStorage.removeItem('productID');
+        localStorage.setItem('isLogin', String('false'));
 
         try {
             await router.push('/main');
-            setTimeout(() => window.location.reload(), 1000);
+            setTimeout(() => window.location.reload(), 2000);
         } catch (error) {
             console.error('Yönlendirme hatası:', error);
         }

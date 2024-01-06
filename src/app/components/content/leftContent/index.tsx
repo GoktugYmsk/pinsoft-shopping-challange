@@ -79,7 +79,7 @@ const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setF
                 <input
                     type="range"
                     min="0"
-                    max="1000"
+                    max="10000"
                     value={fiyatAraligi[1]}
                     onChange={(e) => setFiyatAraligi([fiyatAraligi[0], parseInt(e.target.value, 10)])}
                 />

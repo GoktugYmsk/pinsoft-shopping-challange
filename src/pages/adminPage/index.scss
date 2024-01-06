@@ -54,6 +54,12 @@ body {
                 align-items: center;
                 justify-content: space-around;
             }
+
+            .container-adminPage__tableBox__box__image {
+                width: 100px;
+                height: 100px;
+                object-fit: contain;
+            }
         }
 
 

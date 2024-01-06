@@ -1,4 +1,4 @@
-body {
+.body {
     margin: 0;
     padding: 0;
 }
@@ -8,7 +8,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 92vh;
+    height: 93vh;
     background: #9EB8D9;
 
     .container-basketPage__tableBox {
@@ -19,31 +19,91 @@ body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-evenly;
-            width: 908px;
-            height: 627px;
-            top: 103px;
+            width: 1008px;
+            height: 620px;
             left: 214px;
-            border-radius: 20px;
+            border-radius: 10px;
+            padding: 20px;
             background: #FFFFFF;
 
+            h1 {
+                text-align: center;
+                height: 40px;
+                width: 100%;
+                border-radius: 10px;
+            }
 
-            .container-basketPage__tableBox__box {
-                border-radius: 20px;
-                width: 750px;
+            .container-basketPage__tableBox__top__main {
 
-                input {
-                    width: 60px;
-                    height: 100%;
-                }
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-evenly;
+                border-radius: 10px;
+                padding: 40px;
+                height: 100%;
+                width: 100%;
+                padding: 0;
 
-                .basket-remove-button {
-                    width: 80%;
-                    background: rgb(207, 41, 41);
-                    border-style: none;
-                    position: relative;
-                    left: 20px;
-                    color: white;
+                .container-basketPage__tableBox__box {
+                    width: 100%;
+                    height: 450px;
+
+                    th {
+                        position: sticky;
+                        top: 0;
+                        background: #b8b6b6;
+                        height: 20px;
+                        z-index: 1;
+                    }
+
+                    th,
+                    td {
+                        border: 1px solid rgb(108, 26, 26);
+                        width: 200px;
+                    }
+
+                    tr {
+
+                        td {
+                            text-align: center;
+                            height: 20px !important;
+                        }
+                    }
+
+                    tr:nth-child(even) {
+                        background-color: #f9f9f9;
+                    }
+
+                    .table-down {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-around;
+                        border-radius: 10px;
+                    }
+
+                    .delete-icons {
+                        font-size: 35px;
+                    }
+
+                    input {
+                        width: 100%;
+                        height: 40px;
+                    }
+
+                    .basket-remove-button {
+                        width: 80%;
+                        border-style: none;
+                        position: relative;
+                        left: 20px;
+                        color: white;
+                    }
+
+                    img {
+                        width: 100px;
+                        height: 100px;
+                        object-fit: contain;
+                    }
                 }
             }
 
@@ -110,11 +170,5 @@ body {
             background: rgb(235, 235, 235);
         }
 
-    }
-}
-
-@media screen and (min-width: 1300px) {
-    .container-basketPage {
-        height: 95vh;
     }
 }

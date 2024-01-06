@@ -4,4 +4,10 @@
     justify-content: center;
     flex-direction: column;
     gap: 20px;
+
+    img {
+        width: 200px;
+        height: 280px;
+        object-fit: contain;
+    }
 }

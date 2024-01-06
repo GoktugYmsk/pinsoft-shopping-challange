@@ -44,6 +44,7 @@ const OrderPage: React.FC = () => {
                 }
 
                 const data = await response.data;
+                console.log('DATA', data)
                 setGetOrders(data);
             } catch (error) {
                 console.error('Veri alınamadı:', error);
@@ -74,7 +75,6 @@ const OrderPage: React.FC = () => {
                         <Table size="small" aria-label="a dense table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Photo</TableCell>
                                     <TableCell>Name</TableCell>
                                     <TableCell>Price</TableCell>
                                     <TableCell>Quantity</TableCell>
@@ -84,7 +84,6 @@ const OrderPage: React.FC = () => {
                             <TableBody>
                                 {getOrders.map(item => (
                                     <TableRow key={item.id}>
-                                        <TableCell>Resim eklenecek</TableCell>
                                         <TableCell>{item.name}</TableCell>
                                         <TableCell>{item.price}</TableCell>
                                         <TableCell>{item.quantity}</TableCell>

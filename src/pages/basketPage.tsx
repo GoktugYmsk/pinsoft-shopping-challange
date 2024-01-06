@@ -3,7 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { useRouter } from 'next/navigation';
 
-import Table from 'react-bootstrap/Table';
+import Table from '@mui/material/Table';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import IconButton from '@mui/material/IconButton';
+import { RiDeleteBin5Line } from 'react-icons/ri';
+
 import Button from 'react-bootstrap/Button';
 
 import { store } from '@/app/store/store';
@@ -20,6 +28,7 @@ interface Product {
     price: number;
     category: { id: number; name: string };
     quantity: number;
+    base64image: string;
 }
 
 const BasketPage: React.FC = () => {
@@ -63,8 +72,11 @@ const BasketPage: React.FC = () => {
                 price: products.length > 0 ? products[0].price : 0,
                 quantity: products.length > 0 ? products[0].quantity : 0,
                 userId: userID,
+
             }
             const response = await api.post('/orders', orderPayload);
+
+            console.log('response', response)
 
             if (response.status !== 200) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -92,6 +104,27 @@ const BasketPage: React.FC = () => {
         fetchData();
     }, []);
 
+    const decodeBase64Image = (base64: string) => {
+        try {
+            const base64ImageData = base64.split(",")[1];
+            const binaryString = atob(base64ImageData);
+
+            const byteNumbers = new Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                byteNumbers[i] = binaryString.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'image/jpeg' });
+            const dataUrl = URL.createObjectURL(blob);
+
+            return dataUrl;
+        } catch (error) {
+            console.error('Base64 decoding error:', error);
+            return '';
+        }
+    };
+
     return (
         <>
             <Provider store={store}>
@@ -100,61 +133,67 @@ const BasketPage: React.FC = () => {
             <div className='container-basketPage'>
                 <div className='container-basketPage__tableBox'>
                     <div className='container-basketPage__tableBox__top'>
-                        {products.length > 0 ? (
-                            <Table className='container-basketPage__tableBox__box' striped bordered hover>
-                                <thead>
-                                    <tr>
-                                        <th>Ürün Resmi</th>
-                                        <th>Ürün adı</th>
-                                        <th>Fiyatı</th>
-                                        <th>Adeti</th>
-                                        <th>Sepetten Çıkar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {products.map((product) => (
-                                        <tr key={product.id}>
-                                            <td>Ürün resmi eklenecek</td>
-                                            <td>{product.name}</td>
-                                            <td>{product.price}</td>
-                                            <td>
-                                                <input
-                                                    type='number'
-                                                    min='0'
-                                                    value={product.quantity}
-                                                    onChange={(e) => updateQuantity(product.id, parseInt(e.target.value, 10))}
-                                                    className='basket-quantity-input'
-                                                />
-                                            </td>
-                                            <td>
-                                                <Button
-                                                    onClick={() => removeFromTheBasket(product.id)}
-                                                    className='basket-remove-button'
-                                                >
-                                                    Sepetten çıkar
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
-                        ) : (
-                            <div className='container-basketPage__empty-basket'>
-                                <p>Sepetinizde henüz bir ürün bulunmamaktadır.</p>
-                                <Button onClick={handleOnKeepShopping} className='basket-keepShopping-button'>
-                                    Alışverişe Devam Et
-                                </Button>
-                            </div>
-                        )}
-                        <div className='container-basketPage__tableBox__down-buttons'>
-                            {products.length > 0 && (
-                                <>
+                        <h1>BASKET</h1>
+                        <div className='container-basketPage__tableBox__top__main' >
+                            {products.length > 0 ? (
+                                <TableContainer className='container-basketPage__tableBox__box'>
+                                    <Table >
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Ürün Resmi</TableCell>
+                                                <TableCell>Ürün adı</TableCell>
+                                                <TableCell>Fiyatı</TableCell>
+                                                <TableCell>Adeti</TableCell>
+                                                <TableCell>Sepetten Çıkar</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {products.map((product) => (
+                                                <TableRow key={product.id}>
+                                                    <TableCell>
+                                                        {product.base64image && (
+                                                            <img src={decodeBase64Image(product.base64image)} alt={product.name} />
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell>{product.name}</TableCell>
+                                                    <TableCell>{product.price}</TableCell>
+                                                    <TableCell>
+                                                        <input
+                                                            type='number'
+                                                            min='0'
+                                                            value={product.quantity}
+                                                            onChange={(e) => updateQuantity(product.id, parseInt(e.target.value, 10))}
+                                                            className='basket-quantity-input'
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <IconButton onClick={() => removeFromTheBasket(product.id)}>
+                                                            <RiDeleteBin5Line className='delete-icons' />
+                                                        </IconButton>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            ) : (
+                                <div className='container-basketPage__empty-basket'>
+                                    <p>Sepetinizde henüz bir ürün bulunmamaktadır.</p>
                                     <Button onClick={handleOnKeepShopping} className='basket-keepShopping-button'>
                                         Alışverişe Devam Et
                                     </Button>
-                                    <Button onClick={handleCompleteOrder} className='basket-order-button'>Siparişi Tamamla</Button>
-                                </>
+                                </div>
                             )}
+                            <div className='container-basketPage__tableBox__down-buttons'>
+                                {products.length > 0 && (
+                                    <>
+                                        <Button onClick={handleOnKeepShopping} className='basket-keepShopping-button'>
+                                            Alışverişe Devam Et
+                                        </Button>
+                                        <Button onClick={handleCompleteOrder} className='basket-order-button'>Siparişi Tamamla</Button>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

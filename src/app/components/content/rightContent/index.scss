@@ -23,7 +23,14 @@
             height: 100%;
             background: white;
             border-radius: 40px;
+            padding: 20px;
             cursor: pointer;
+
+            img {
+                width: 220px;
+                height: 293px;
+                object-fit: contain;
+            }
 
             button {
                 background: rgb(14, 90, 171);

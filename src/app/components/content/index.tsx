@@ -79,8 +79,9 @@ function Content() {
                 const productsData = productsResponse.data;
                 const categoriesData = categoriesResponse.data;
 
+                console.log('productsData', productsData)
+
                 setAllProducts(productsData);
-                console.log('allProducts', allProducts);
                 setCategories(categoriesData);
             } catch (error) {
                 console.error('Veri alınamadı:', error);
@@ -89,6 +90,10 @@ function Content() {
 
         fetchData();
     }, []);
+
+    useEffect(() => {
+        console.log('allProducts', allProducts);
+    }, [])
 
     const handleSigninClick = () => {
         router.push('/login');
