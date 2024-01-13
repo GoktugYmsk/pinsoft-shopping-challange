@@ -41,6 +41,10 @@ const Signup: React.FC<SignupProps> = () => {
         }
     };
 
+    const handleLoginClick = () => {
+        router.push('/login');
+    };
+
     return (
         <>
             <Provider store={store}>
@@ -68,6 +72,10 @@ const Signup: React.FC<SignupProps> = () => {
                         </label>
                     </div>
                     <button className='container-signin__box__signin-button' onClick={handleSignup} >SIGN UP</button>
+                    <div className='container-signin__box__signup-area'>
+                        <p>Are you already a member? </p>
+                        <p className='container-signin__box__signup-button' onClick={handleLoginClick}> Login</p>
+                    </div>
                 </div>
             </div>
         </>

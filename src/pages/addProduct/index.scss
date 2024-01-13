@@ -41,7 +41,7 @@
 
         button {
 
-            width: 580px;
+            width: 400px;
             height: 52px;
             border-radius: 10px;
             background: #265073;
@@ -66,6 +66,18 @@
 
             border: 1px;
             text-indent: 20px;
+        }
+
+        .container-addProduct__table-box__down {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-around;
+
+            .container-addProduct__table-box__down__icon {
+                font-size: 50px;
+                cursor: pointer;
+            }
         }
 
         h1 {

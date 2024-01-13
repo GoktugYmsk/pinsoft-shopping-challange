@@ -18,7 +18,6 @@ function DeleteProductPopup({ setIsDeletePopup, setToastActive, deletedProductId
     const handleDeleteProduct = async () => {
         try {
             await api.delete(`/product/${deletedProductId}`);
-            console.log('Ürün başarıyla silindi.');
             setToastMessage('Data deleted succesfully!')
             setToastActive(true)
             setIsDeletePopup(false);

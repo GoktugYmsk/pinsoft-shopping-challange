@@ -44,7 +44,6 @@ const OrderPage: React.FC = () => {
                 }
 
                 const data = await response.data;
-                console.log('DATA', data)
                 setGetOrders(data);
             } catch (error) {
                 console.error('Veri alınamadı:', error);

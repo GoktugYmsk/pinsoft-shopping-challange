@@ -24,7 +24,7 @@ interface Product {
     id: number;
     name: string;
     price: number;
-    category: string;
+    category: any;
     explanation: string;
     base64image: string;
 }
@@ -42,13 +42,18 @@ function Content() {
     const router = useRouter();
 
     const urunleriFiltrele = (urun: Product) => {
+        if (!filtre && !fiyatAraligi && !selectedCategories.length) {
+            return true;
+        }
+        const isFiyatAraligiGecerli = fiyatAraligi && fiyatAraligi.length === 2;
         return (
             urun.name.toLowerCase().includes(filtre.toLowerCase()) &&
-            urun.price >= fiyatAraligi[0] &&
-            urun.price <= fiyatAraligi[1] &&
-            (selectedCategories.length === 0 || selectedCategories.includes(urun.id))
+            (!isFiyatAraligiGecerli ||
+                (urun.price >= fiyatAraligi[0] && urun.price <= fiyatAraligi[1])) &&
+            (!selectedCategories.length || selectedCategories.includes(urun.category.id))
         );
     };
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -79,8 +84,6 @@ function Content() {
                 const productsData = productsResponse.data;
                 const categoriesData = categoriesResponse.data;
 
-                console.log('productsData', productsData)
-
                 setAllProducts(productsData);
                 setCategories(categoriesData);
             } catch (error) {
@@ -90,10 +93,6 @@ function Content() {
 
         fetchData();
     }, []);
-
-    useEffect(() => {
-        console.log('allProducts', allProducts);
-    }, [])
 
     const handleSigninClick = () => {
         router.push('/login');

@@ -39,15 +39,17 @@ const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setF
         fetchData();
     }, []);
 
+
     const handleCheckboxChange = (categoryId: number) => {
         setSelectedCategories((prevSelectedCategories) => {
-            if (prevSelectedCategories.includes(categoryId)) {
-                return prevSelectedCategories.filter((id) => id !== categoryId);
-            } else {
-                return [...prevSelectedCategories, categoryId];
-            }
+            const updatedCategories = prevSelectedCategories.includes(categoryId)
+                ? prevSelectedCategories.filter((id) => id !== categoryId)
+                : [...prevSelectedCategories, categoryId];
+
+            return updatedCategories;
         });
     };
+
 
     return (
         <div className='container-content__box-left'>
@@ -79,7 +81,7 @@ const LeftContent: React.FC<LeftContentProps> = ({ setFiltre, fiyatAraligi, setF
                 <input
                     type="range"
                     min="0"
-                    max="10000"
+                    max="200000"
                     value={fiyatAraligi[1]}
                     onChange={(e) => setFiyatAraligi([fiyatAraligi[0], parseInt(e.target.value, 10)])}
                 />

@@ -40,6 +40,7 @@ function RightContent({
         setProductInBasket(newProductInBasket);
     }, []);
 
+
     const handleAddBasket = (product: Product) => {
         const sessionStorageBasket = sessionStorage.getItem('basketProducts');
         let updatedBasket = sessionStorageBasket ? JSON.parse(sessionStorageBasket) : [];

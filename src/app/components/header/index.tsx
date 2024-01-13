@@ -69,7 +69,6 @@ function Header() {
                 if (roles && isLoggedIn) {
                     const userRole = roles.find((role) => role.username === username);
                     if (userRole) {
-                        console.log('Kullanıcı Rolü:', userRole.id);
 
                         if (userRole.role.name === 'user') {
                             const userID = userRole.id;

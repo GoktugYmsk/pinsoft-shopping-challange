@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Provider } from 'react-redux';
 
 import Button from 'react-bootstrap/Button';
+import { IoIosReturnLeft } from "react-icons/io";
 
 import api from '../../intercepter';
 import { store } from '@/app/store/store';
@@ -30,8 +31,6 @@ const AddProduct: React.FC = () => {
                 return 0;
         }
     };
-
-
 
     const handleSaveClick = async () => {
         try {
@@ -103,6 +102,10 @@ const AddProduct: React.FC = () => {
         }
     };
 
+    const hadnleReturnClick = () => {
+        router.push('/adminPage');
+    };
+
 
     return (
         <>
@@ -151,7 +154,10 @@ const AddProduct: React.FC = () => {
                         value={explanation}
                         onChange={(e) => setExplanation(e.target.value)}
                     ></textarea>
-                    <Button onClick={handleSaveClick}>SAVE</Button>
+                    <div className='container-addProduct__table-box__down' >
+                        <IoIosReturnLeft onClick={hadnleReturnClick} className='container-addProduct__table-box__down__icon' />
+                        <Button onClick={handleSaveClick}>SAVE</Button>
+                    </div>
                 </div>
             </div>
         </>

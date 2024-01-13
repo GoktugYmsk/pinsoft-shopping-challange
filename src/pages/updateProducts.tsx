@@ -1,8 +1,9 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 
 import Button from 'react-bootstrap/Button';
+import { IoIosReturnLeft } from "react-icons/io";
 
 import api from '../../intercepter';
 import { store } from '@/app/store/store';
@@ -74,6 +75,10 @@ const AddProduct: React.FC = () => {
         }
     };
 
+    const handleReturnClick = () => {
+        router.push('/adminPage');
+    };
+
     return (
         <>
             <Provider store={store}>
@@ -121,7 +126,10 @@ const AddProduct: React.FC = () => {
                         value={explanation}
                         onChange={(e) => setExplanation(e.target.value)}
                     ></textarea>
-                    <Button onClick={handleSaveClick}>SAVE</Button>
+                    <div className='container-updateProducts__table-box__down' >
+                        <IoIosReturnLeft onClick={handleReturnClick} className='container-updateProducts__table-box__down__icon' />
+                        <Button onClick={handleSaveClick}>SAVE</Button>
+                    </div>
                 </div>
             </div>
 

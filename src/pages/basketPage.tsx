@@ -76,8 +76,6 @@ const BasketPage: React.FC = () => {
             }
             const response = await api.post('/orders', orderPayload);
 
-            console.log('response', response)
-
             if (response.status !== 200) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
